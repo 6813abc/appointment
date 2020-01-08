@@ -13,13 +13,14 @@ $(document).ready(function () {
             height: '580px',
         });
 
+        //初始化页面
+        init();
         //没有登录则显示注册、登录按钮,隐藏个人中心
         if ($.cookie('userToken') === undefined || $.cookie('userToken') === null || $.cookie('userToken') === 'null' || $.cookie('userToken').length === 0) {
             show();
         } else {
             hide();
         }
-
         //注册点击
         var indexOpenRegister;
         $("#index-register").click(function () {
@@ -127,11 +128,28 @@ $(document).ready(function () {
             $(".a-num").removeClass("active");
             $(this).parent().children("e").text($(this).val() * 10)
         });
+        //确认充值按钮
         $('#index-recharge-button').click(function () {
             sureRecharge(layer, indexOpenRecharge);
         });
-        //初始化页面
-        init();
+        //充值记录点击事件
+        var indexRechargeRecord;
+        $('#index-recharge-record').click(function () {
+            indexRechargeRecord = openRecord(layer);
+            //加载数据
+        });
+        //消费记录点击事件
+        var indexConsumptionRecord;
+        $('#index-consumption-record').click(function () {
+            indexConsumptionRecord = openRecord(layer);
+            //加载数据
+        });
+        //预约记录点击事件
+        var indexAppointmentRecord;
+        $('#index-recharge-record').click(function () {
+            indexAppointmentRecord = openRecord(layer);
+            //加载数据
+        });
     });
 });
 
@@ -378,6 +396,18 @@ function sureRecharge(layer, indexOpenRecharge) {
         error: function (data) {
             layer.msg(data.status, {icon: 5});
         }
+    });
+}
+
+//弹出记录框，加载充值记录
+function openRecord(layer) {
+    return layer.open({
+        type: 1,
+        title: '记录',
+        content: $('#index-record'),
+        area: ['auto', 'auto'],
+        anim: 1,
+        maxmin: true
     });
 }
 
