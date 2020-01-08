@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <link href='css/admin.css' rel='stylesheet' type='text/css'/>
+    <link href='layui/css/layui.css' rel='stylesheet' type='text/css'/>
+    <script src='js/jquery-1.10.1.min.js' type='text/javascript'></script>
+    <script type='text/javascript' src='js/jquery.cookie.js'></script>
+    <script src='layui/layui.js' type='text/javascript'></script>
+    <script src='js/main.js' type='text/javascript'></script>
+    <title>AIAPS</title>
+</head>
+<body>
+<div class='layui-layout layui-layout-admin'>
+    <!--顶部导航-->
+    <div class='admin-header'>
+        <span class='layui-logo' id='layui-logo'>管理系统</span>
+        <ul class='layui-nav' id='admin-header-ul'>
+            <li class='layui-nav-item'>
+                <i class='layui-icon layui-icon-shrink-right' id='menu-bar'></i>
+            </li>
+            <li class='layui-nav-item'>
+                <i class='layui-icon layui-icon-refresh' id='admin-refresh'></i>
+            </li>
+            <li class='layui-nav-item'>
+                <input type='text' name='title' id='admin-search' placeholder='搜索...' autocomplete='off'>
+            </li>
+            <li class='layui-nav-item' id='admin-header-img'>
+                <a href=''><img src='' class='layui-nav-img' id='main-self-img'></a>
+                <dl class='layui-nav-child'>
+                    <dd><a href='javascript:;' id='pub-message'>基本信息</a></dd>
+                    <dd><a href='javascript:;' id='update-password'>修改密码</a></dd>
+                    <dd><a href='javascript:;' id="pub-logout">退出登陆</a></dd>
+                </dl>
+            </li>
+        </ul>
+        <!--<i class='layui-icon layui-icon-shrink-right' id='menu-bar' onclick='fold()'></i>
+        <i class='layui-icon layui-icon-refresh' id='admin-refresh'></i>
+        <input type='text' name='title' id='admin-search' placeholder='搜索...' autocomplete='off'>-->
+    </div>
+    <!--侧边菜单栏-->
+    <div class='layui-side layui-bg-black leftMenuDiv'>
+        <div class='layui-side-scroll'>
+            <ul class='layui-nav layui-nav-tree nav-tree-main' lay-shrink='all'>
+                <li class='layui-nav-item' id="admin-coach">
+                    <a href='javascript:;'><i class='layui-icon'>&#xe66f;</i> <span
+                            class='cite'>教练<em>管理</em></span></a>
+                    <dl class='layui-nav-child'>
+                        <dd id='admin-coach-main'><a href='javascript:;'><span class='cite'>教练查询</span></a></dd>
+                        <dd><a href='javascript:;'><span class='cite'>业绩分析</span></a></dd>
+                    </dl>
+                </li>
+                <li class='layui-nav-item' id="admin-customer">
+                    <a href='javascript:;'><i class='layui-icon'>&#xe770;</i> <span
+                            class='cite'>客户<em>管理</em></span></a>
+                    <dl class='layui-nav-child'>
+                        <dd><a href='javascript:;' id="admin-customer-main"><span class='cite'>客户查询</span></a></dd>
+                        <dd><a href='javascript:;'><span class='cite'>统计分析</span></a></dd>
+                    </dl>
+                </li>
+                <li class='layui-nav-item'>
+                    <a href='javascript:;'><i class='layui-icon'>&#xe631;</i> <span
+                            class='cite'>器材<em>管理</em></span></a>
+                    <dl class='layui-nav-child'>
+                        <dd><a href='javascript:;' id="admin-equip-main"><span class='cite'>器材查询</span></a></dd>
+                        <dd><a href='javascript:;'><span class='cite'>器材分析</span></a></dd>
+                    </dl>
+                </li>
+                <li class='layui-nav-item'>
+                    <a href='javascript:;'><i class='layui-icon'>&#xe715;</i> <span
+                            class='cite'>场地<em>管理</em></span></a>
+                    <dl class='layui-nav-child'>
+                        <dd><a href='javascript:;' id="admin-filed-main"><span class='cite'>场地查询</span></a></dd>
+                        <dd><a href='javascript:;'><span class='cite'>场地分析</span></a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class='layui-body'>
+        <div class='layui-fluid'>
+            <div class='layui-row'>
+                <hr class='layui-bg-gray'>
+                <div class='layui-col-md12 wMain-col-bg1'>
+                    <span class='layui-breadcrumb coach-nav' lay-separator='-' id='coach-nav'>
+                    </span>
+                </div>
+                <div class='layui-col-md12 wMain-col-bg2' id='main-div'>
+                    <table id='main-div-table' lay-filter='main-div-table'></table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--个人信息框-->
+<div id='pub-self-message' style='display: none'>
+    <div>
+        <div id='self-all'>
+            <blockquote class='layui-elem-quote' style='height: 60px'>
+                姓名：<span id='self-name'></span> &nbsp|&nbsp 关注：<span>3</span> &nbsp|&nbsp 粉丝：<span>10</span>
+            </blockquote>
+            <img src='' id='self-img' style='width: 80px;height: 80px;position: absolute;top: 1px;right: 10px'/>
+            <div class='layui-inline'>
+                <label class='layui-form-label'>性别</label>
+                <div class='layui-input-inline'>
+                    <input type='tel' name='sex' id='self-sex' lay-verify='required' autocomplete='off'
+                           class='layui-input'>
+                </div>
+                <label class='layui-form-label' id='self-edit' style='float: right;'>修改资料</label>
+            </div>
+            <div class='layui-inline'>
+                <label class='layui-form-label'>电话</label>
+                <div class='layui-input-inline'>
+                    <input type='tel' name='phone' id='self-phone' lay-verify='required' autocomplete='off'
+                           class='layui-input'>
+                </div>
+            </div>
+            <div class='layui-inline'>
+                <label class='layui-form-label'>年龄</label>
+                <div class='layui-input-inline'>
+                    <input type='tel' name='age' id='self-age' lay-verify='required' autocomplete='off'
+                           class='layui-input'>
+                </div>
+            </div>
+            <div class='layui-inline'>
+                <label class='layui-form-label'>角色</label>
+                <div class='layui-input-inline'>
+                    <input type='tel' name='role' id='self-role' lay-verify='required' autocomplete='off'
+                           class='layui-input'>
+                </div>
+            </div>
+            <div class='layui-form-item'>
+                <div class='layui-input-block'>
+                    <button type='submit' class='layui-btn' lay-submit='' lay-filter='demo1'>立即提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--修改密码框-->
+<div id="pub-update-message" style="display: none">
+    <div class='layui-inline'>
+        <label class='layui-form-label'>原密码</label>
+        <div class='layui-input-inline'>
+            <input type='password' name='oldPassword' id='pub-old-password' lay-verify='required' autocomplete='off'
+                   class='layui-input'>
+        </div>
+    </div>
+    <div class='layui-inline'>
+        <label class='layui-form-label'>新密码</label>
+        <div class='layui-input-inline'>
+            <input type='password' name='newPassword' id='pub-new-password' lay-verify='required' autocomplete='off'
+                   class='layui-input'>
+        </div>
+    </div>
+    <div class='layui-inline'>
+        <label class='layui-form-label'>确认密码</label>
+        <div class='layui-input-inline'>
+            <input type='password' name='subPassword' id='pub-sub-password' lay-verify='required' autocomplete='off'
+                   class='layui-input'>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" id="pub-sub-update-password">确认</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

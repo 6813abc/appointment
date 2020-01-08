@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://119.27.171.107:3306/appointment?characterEncoding=utf8&useSSL=false
+    username: root
+    password: 741623
+  redis:
+    database: 0
+    host: 119.27.171.107
+    port: 6379
+    timeout: 500
+    password: 741623
+#JWT
+jwt:
+  secret: JO6HN3NGIU25G2FIG8V7VD6CK9B6T2Z5
+  expire: 60000
+
+server:
+  port: 8095
+  tomcat:
+    max-http-form-post-size: -1
+  max-http-header-size: 102400

@@ -1,0 +1,175 @@
+em, i {
+    font-style: normal;
+}
+
+.nav-tree-main .layui-nav-item > a i {
+    margin-right: 10px;
+}
+
+.nav-tree-main .layui-nav-item > .layui-nav-child dd a {
+    padding-left: 40px;
+}
+
+#admin-header-ul {
+    cursor: pointer;
+    position: absolute;
+    background-color: white;
+    top: 0;
+    size: 10px;
+}
+
+#admin-header-ul {
+    left: 200px;
+    width: calc(100% - 140px);
+}
+
+.layui-nav-item {
+    margin-right: 40px;
+}
+
+#menu-bar, #admin-search, #admin-refresh {
+    border: 0;
+    color: black;
+}
+
+#admin-header-img {
+    float: right;
+}
+
+.layui-layout-admin .layui-logo {
+    left: 64px;
+    text-align: left;
+    color: #fff;
+}
+
+/* 左侧栏 *** 向左折叠 mini-sidebar */
+.mini-sidebar .layui-layout-admin .layui-side {
+    width: 48px;
+    overflow-x: visible;
+}
+
+.mini-sidebar .layui-layout-admin .layui-side:hover .layui-side-scroll {
+    width: 268px;
+}
+
+.mini-sidebar .nav-tree-main .layui-side-scroll {
+    width: 48px;
+    overflow-x: initial;
+}
+
+.mini-sidebar .nav-tree-main.layui-nav-tree {
+    width: 48px !important;
+}
+
+.mini-sidebar .nav-tree-main.layui-nav-tree .layui-nav-item {
+    position: relative;
+}
+
+.mini-sidebar .nav-tree-main > .layui-nav-item > .layui-nav-child {
+    position: absolute;
+    left: 48px;
+    top: 0;
+    width: 200px;
+    background-color: rgba(57, 61, 73, .9) !important;
+    display: none;
+    z-index: 9999;
+    border-radius: 0;
+}
+
+.mini-sidebar .nav-tree-main > .layui-nav-item > .layui-nav-child dd a {
+    line-height: 40px;
+    text-align: left;
+    padding: 0 20px;
+    color: #fff;
+}
+
+.mini-sidebar .nav-tree-main > .layui-nav-item:hover > .layui-nav-child {
+    display: block;
+}
+
+.mini-sidebar .nav-tree-main > .layui-nav-item a {
+    padding: 10px 0 0 0;
+    line-height: 15px;
+    text-align: center;
+}
+
+.mini-sidebar .nav-tree-main > .layui-nav-item > a > .sideIcons {
+    margin: 0 auto;
+}
+
+.mini-sidebar .nav-tree-main .icon {
+    line-height: 12px;
+}
+
+.mini-sidebar .nav-tree-main > .layui-nav-item a > .cite {
+    display: block;
+    line-height: 12px;
+    padding-top: 5px;
+    font-size: 12px;
+    margin-left: 10px;
+}
+
+.mini-sidebar .nav-tree-main > .layui-nav-item .cite em {
+    display: none;
+}
+
+.mini-sidebar .nav-tree-main > .layui-nav-item .layui-nav-child dd .cite {
+    line-height: 40px;
+    padding: 0;
+}
+
+.mini-sidebar .nav-tree-main > .layui-nav-item > a .layui-nav-more {
+    display: none;
+}
+
+.mini-sidebar .nav-tree-main .sub-nav .layui-nav-item a {
+    line-height: 40px;
+    text-align: left;
+    padding: 0 20px;
+    color: #b4bcc8;
+}
+
+.mini-sidebar .nav-tree-main .sub-nav .layui-nav-item .layui-nav-more {
+    display: block;
+}
+
+.mini-sidebar .layui-body {
+    left: 48px;
+}
+
+.mini-sidebar .nav-tree-main .layui-nav-item > a i {
+    margin: 0 auto;
+}
+
+/*右侧*/
+.layui-fluid {
+    padding: 15px;
+}
+
+.wMain-col-bg1, .wMain-col-bg2 {
+    text-align: center;
+    padding: 10px;
+    background: white;
+}
+
+.wMain-col-bg1 {
+}
+
+.wMain-col-bg2 {
+}
+
+.admin-header {
+    position: relative;
+    z-index: 1000;
+    height: 60px;
+}
+
+.layui-logo {
+    background-color: #2E2D3C;
+}
+
+.coach-nav {
+    height: 20px;
+    float: left;
+}
+

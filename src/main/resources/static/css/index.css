@@ -1,0 +1,258 @@
+.index-img {
+    width: 100%;
+}
+
+#index-user {
+    float: right;
+}
+
+#index-register, #index-login {
+    float: right;
+}
+
+#index-register-head {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
+#index-register-img-head {
+    text-align: center;
+    margin: 0 auto;
+}
+
+#layui-form-item-phone {
+    margin-top: 20px;
+}
+
+#login-main {
+    width: 400px;
+    height: 300px;
+    position: absolute;
+    margin-left: -200px;
+    margin-top: -150px;
+    top: 50%;
+    left: 50%;
+    border: 1px solid #9bdf70;
+    background: #dddddd;
+}
+
+#login-name-div {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+#login-name {
+    width: 80px;
+    height: 80px;
+    font-size: 20px;
+    font-weight: bolder;
+    font-style: italic;
+}
+
+/*版权所有*/
+#footer {
+    height: 40px;
+    line-height: 40px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    background: #333;
+    color: #fff;
+    font-family: Arial, serif;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+.content {
+    height: 1800px;
+    width: 100%;
+    text-align: center;
+}
+
+#index-img-msg {
+    height: 100px;
+    background: #4E5465;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding-top: 50px;
+    font-size: 30px;
+}
+
+#index-img-msg > img {
+    width: 50px;
+    height: 50px;
+}
+
+#index-img-msg > span {
+    font-size: 32px;
+}
+
+/*#member-msg {
+    color: white;
+}*/
+
+
+.member-div-card {
+    height: 100px;
+    width: 220px;
+    background: #ffffff;
+}
+
+.member-div-card > span {
+    padding-left: 20px;
+}
+
+.member-div-msg {
+    padding-bottom: 20px !important;
+    margin: 0 !important;
+    color: red;
+}
+
+.member-div-font {
+    font-size: 25px;
+}
+
+.member-privilege-font {
+    text-align: center;
+    display: block;
+    font-size: 40px;
+    padding-top: 80px;
+    margin-bottom: 100px;
+}
+
+.member-div-font-msg {
+    font-size: 15px;
+    font-family: mySweet, serif;
+}
+
+.layui-col-md2-msg {
+    text-align: center;
+    border-right: 1px solid #8D8D8D;
+    background: white;
+    margin-bottom: 200px;
+    height: 200px;
+}
+
+.layui-col-md2-msg-edge-left {
+    border-left: 1px solid #8D8D8D !important;
+}
+
+.layui-col-md2-msg > span {
+    font-size: 30px;
+    background: greenyellow;
+}
+
+layui-col-md2-msg-font:nth-
+
+
+/*充值界面*/
+html {
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+}
+
+.form1 {
+    width: 710px;
+    margin: 0 auto;
+    padding: 60px 40px 50px;
+    border: 1px solid #ccc;
+}
+
+.form1 label {
+    margin-top: 26px;
+    display: block;
+    font-weight: 400;
+}
+
+.form1 div {
+    width: 500px;
+    float: right;
+    margin-right: 56px;
+}
+
+.form1 span {
+    width: 140px;
+    height: 35px;
+    display: inline-block;
+    text-align: right;
+    line-height: 35px;
+    color: #333;
+    font-size: 14px;
+}
+
+/* 设置相对定位 */
+.form1 label .a-num {
+    width: 98px;
+    height: 36px;
+    line-height: 36px;
+    border: 1px solid #ececec;
+    border-radius: 4px;
+    display: inline-block;
+    font-size: 14px;
+    color: #333;
+    text-align: center;
+    margin-right: 20px;
+    margin-bottom: 10px;
+    position: relative;
+    cursor: pointer;
+}
+
+/* 设置图片绝对定位,隐藏 */
+.form1 label .a-num .select-img {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    display: none;
+}
+
+/* 选中后加蓝色边框 显示小图片 */
+.form1 label .active {
+    border: 1px solid #229fe7;
+}
+
+.form1 label .active .select-img {
+    display: block;
+}
+
+.form1 button {
+    margin-top: 100px;
+    display: inline-block;
+}
+
+.num_rmb {
+    margin-right: 0;
+    width: 120px;
+    height: 36px;
+    line-height: 36px;
+    border: 1px solid #ececec;
+    border-radius: 4px;
+    display: inline-block;
+    font-size: 14px;
+    color: #333;
+    padding: 0 12px;
+}
+
+#index-recharge-success input {
+    border: 0;
+}
+
+#index-recharge-success-i {
+    background: #00FF00;
+    font-size: 30px;
+    color: white;
+    border-radius: 30%;
+}
+
+#index-recharge-success-son {
+    text-align: center;
+    margin: 0 auto;
+}
+
+/*admin*/
+

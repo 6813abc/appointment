@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <title>AIAPS</title>
+    <link href="favicon.ico" rel="shortcut icon">
+    <link href="css/index.css" rel="stylesheet" type="text/css"/>
+    <link href="layui/css/layui.css" rel="stylesheet" type="text/css"/>
+
+    <script src="js/jquery-1.10.1.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="js/jquery.cookie.js"></script>
+    <script src="layui/layui.js" type="text/javascript"></script>
+    <script src="js/index.js" type="text/javascript"></script>
+</head>
+<body>
+<!--导航栏-->
+<ul class="layui-nav layui-bg-cyan" lay-filter="demo">
+    <li class="layui-nav-item" id="index-index"><a href="javascript:void(0);">首页</a></li>
+    <li class="layui-nav-item"><a href="">我要预约</a></li>
+    <li class="layui-nav-item" id="index-to-member"><a href="javascript:void(0);">成为会员</a></li>
+    <li class="layui-nav-item">
+        <a href="javascript:;">解决方案</a>
+        <dl class="layui-nav-child">
+            <dd><a href="">移动模块</a></dd>
+            <dd><a href="">后台模版</a></dd>
+            <dd><a href="">电商平台</a></dd>
+        </dl>
+    </li>
+    <li class="layui-nav-item"><a href="">线下活动</a></li>
+    <li class="layui-nav-item"><a href="">社区分享</a></li>
+    <li class="layui-nav-item" id="index-user">
+        <img src="" class="layui-nav-img" id="layui-nav-img">个人中心
+        <dl class="layui-nav-child">
+            <dd><a href="javascript:;">预约查询</a></dd>
+            <dd><a href="javascript:;">个人信息</a></dd>
+            <dd><a href="javascript:;" id="index-recharge">充值余额</a></dd>
+            <dd><a href="javascript:;" id="index-recharge-record">充值记录</a></dd>
+            <dd><a href="javascript:;" id="index-logout">退出登录</a></dd>
+        </dl>
+    </li>
+    <li class="layui-nav-item" id="index-register" style="display: none;"><a href="javascript:void(0);">注册</a></li>
+    <li class="layui-nav-item" id="index-login" style="display: none;"><a href="javascript:void(0);">登录</a></li>
+</ul>
+
+<!--注册弹出框-->
+<div id="index-register-eject" style="display: none">
+    <div id="index-register-img-head">
+        <img src="//t.cn/RCzsdCq" class="layui-nav-img" id="index-register-head" alt="头像">
+    </div>
+    <!--蓝色分割线-->
+    <hr class="layui-bg-blue" id="index-register-line">
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">手机</label>
+            <div class="layui-input-inline">
+                <input type="text" name="phone" required lay-verify="required|phone|number" placeholder="请输入手机号"
+                       autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">昵称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="name" required lay-verify="required" placeholder="请输入昵称"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">地址</label>
+            <div class="layui-input-inline">
+                <input type="text" name="address" required lay-verify="required" placeholder="请输入地址"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-inline">
+                <input type="password" name="password" required lay-verify="required" placeholder="请输入密码"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">后面提示</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">确认密码</label>
+            <div class="layui-input-inline">
+                <input type="password" name="passwordSure" required lay-verify="required" placeholder="请再次输入密码"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">后面提示</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">性别</label>
+            <div class="layui-input-block">
+                <input type="radio" name="sex" value="男" title="男">
+                <input type="radio" name="sex" value="女" title="女" checked>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="layui-btn-submit-register">注册</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--登录弹出框-->
+<div id="index-login-eject" style="display: none">
+    <form class="layui-form" action="" id="layui-form-login" method="post">
+        <div class="layui-form-item" id="layui-form-item-phone">
+            <label class="layui-form-label">手机</label>
+            <div class="layui-input-inline">
+                <input type="text" name="phone" required lay-verify="required|phone|number" placeholder="请输入手机号"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux"></div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-inline">
+                <input type="password" name="password" required lay-verify="required" placeholder="请输入密码"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux"></div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">验证码</label>
+            <div class="layui-input-inline">
+                <input type="code" name="code" required lay-verify="required" placeholder="请输入验证码"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux"><img src="" style="width: 80px; height: 30px;" alt="验证码"
+                                                            id="img-code"/></div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="layui-btn-submit-login">登录</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--充值弹出框-->
+<div id="index-recharge-eject" style="display: none">
+    <form class="form1">
+        <label class="type1" style="height:120px;">
+            <span>充值金额：</span>
+            <div>
+                <span class="a-num" RMB="50">50RMB<img class="select-img" src="img/select-icon.png"
+                                                       alt=""></span>
+                <span class="a-num" RMB="100">100RMB<img class="select-img" src="img/select-icon.png"
+                                                         alt=""></span>
+                <span class="a-num active" RMB="200">200RMB<img class="select-img" src="img/select-icon.png"
+                                                                alt=""></span>
+                <span class="a-num" RMB="500">500RMB<img class="select-img" src="img/select-icon.png"
+                                                         alt=""></span>
+                <span class="a-num" RMB="1000">1000RMB<img class="select-img" src="img/select-icon.png"
+                                                           alt=""></span>
+                <span class="a-num" RMB="2000">2000RMB<img class="select-img" src="img/select-icon.png"
+                                                           alt=""></span>
+                <span class="a-num" RMB="3000">3000RMB<img class="select-img" src="img/select-icon.png"
+                                                           alt=""></span>
+                <span class="a-num" RMB="5000">5000RMB<img class="select-img" src="img/select-icon.png"
+                                                           alt=""></span>
+                <span class="a-num" RMB="10000">10000RMB<img class="select-img" src="img/select-icon.png"
+                                                             alt=""></span>
+            </div>
+        </label>
+        <label class="type2">
+            <span>　</span>
+            <div>
+                <input class="num_rmb" type="text" value="200" placeholder="请输入数据"
+                       onkeyup="this.value=this.value.replace(/[^\d]/g,'')">
+                RMB =
+                <e>2000</e>
+                积分
+            </div>
+            <button type="button" class="layui-btn layui-btn-fluid" id="index-recharge-button">确认</button>
+        </label>
+    </form>
+</div>
+
+<!--充值成功界面-->
+<div id="index-recharge-success" style="display: none">
+    <div id="index-recharge-success-son">
+        <i class="layui-icon layui-icon-ok" id="index-recharge-success-i">充值成功</i>
+    </div>
+    <div class='layui-form-item'>
+        <label class='layui-form-label'>交易时间：</label>
+        <div class='layui-input-block'>
+            <input type='text' id='recharge-time' lay-verify='required' autocomplete='off'
+                   class='layui-input'>
+        </div>
+    </div>
+    <div class='layui-form-item'>
+        <label class='layui-form-label'>交易金额：</label>
+        <div class='layui-input-block'>
+            <input type='text' id='recharge-money' lay-verify='required' autocomplete='off'
+                   class='layui-input'>
+        </div>
+    </div>
+    <div class='layui-form-item'>
+        <label class='layui-form-label'>交易流水：</label>
+        <div class='layui-input-block'>
+            <input type='text' id='recharge-flow' lay-verify='required' autocomplete='off'
+                   class='layui-input'>
+        </div>
+    </div>
+</div>
+</body>
+</html>
