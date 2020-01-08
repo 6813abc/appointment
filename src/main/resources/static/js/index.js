@@ -331,7 +331,7 @@ function renewMember(month) {
             } else if (data.code === '50012') {
                 //余额不足，打开充值界面
                 layer.msg('余额不足，请充值', {icon: 5});
-                layer.confirm('余额不足，是否前往充值界面?', function (index) {
+                layer.confirm('余额不足，是否前往充值?', function (index) {
                     //打开充值界面
                     openRecharge(layer);
                     layer.close(index);

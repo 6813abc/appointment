@@ -141,14 +141,37 @@
 }
 
 .layui-col-md2-msg > span {
-    font-size: 30px;
-    background: greenyellow;
+    font-size: 20px;
 }
 
-.layui-col-md2-msg-font:nth-of-type(1){
-
+.layui-col-md2-msg-font-pt {
 }
 
+.layui-col-md2-msg-font-qt {
+    background: #A67D3D;
+}
+
+.layui-col-md2-msg-font-by {
+    background: silver;
+}
+
+.layui-col-md2-msg-font-hj {
+    background: gold;
+}
+
+.layui-col-md2-msg-font-zs {
+    opacity: 0.4;
+    background: yellowgreen;
+}
+
+.layui-col-md2-msg-font-zz {
+    background: violet;
+}
+
+.member-dj-img {
+    width: 20px;
+    height: 20px;
+}
 
 /*充值界面*/
 html {
