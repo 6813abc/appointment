@@ -219,6 +219,7 @@ document.writeln("      <a href=\'javascript:;\'>充值记录</a>");
 document.writeln("      <a href=\'javascript:;\'>消费记录</a>");
 document.writeln("      <a href=\'javascript:;\'>预约记录</a>");
 document.writeln("    </span>");
+document.writeln("    <table id=\'index-record-table\' lay-filter=\'index-record-table\'></table>");
 document.writeln("</div>");
 document.writeln("</body>");
 document.writeln("</html>");

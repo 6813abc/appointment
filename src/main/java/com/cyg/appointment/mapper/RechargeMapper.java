@@ -28,11 +28,25 @@ public interface RechargeMapper {
     void addRecharge(@Param("r") Recharge recharge);
 
     /**
-     * 功能描述:新增充值记录
+     * 功能描述:查询充值记录
      *
+     * @param limit 限制
+     * @param index 开始
      * @return void
      * @date 2019/1/6
      */
-    @Insert("select * from recharge limit #{index},#{limit}")
+    @Select("select * from recharge limit #{index},#{limit}")
+    @Results({
+            @Result(column = "create_time", property = "createTime"),
+    })
     List<Recharge> selectAllRecharge(Long index, Integer limit);
+
+    /**
+     * 功能描述:查询数据量
+     *
+     * @return java.lang.String
+     * @date 2019/12/28
+     */
+    @Select("select count(*) from recharge")
+    Integer selectLength();
 }

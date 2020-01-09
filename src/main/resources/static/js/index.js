@@ -1,11 +1,12 @@
 $(document).ready(function () {
     $.cookie('url', 'http://127.0.0.1:8095');
-    layui.use(['element', 'carousel', 'layer', 'form', 'upload'], function () {
+    layui.use(['element', 'carousel', 'layer', 'form', 'upload', 'table'], function () {
         var element = layui.element;
         var carousel = layui.carousel;
         var layer = layui.layer;
         var form = layui.form;
         var upload = layui.upload;
+        var table = layui.table;
         //首页轮播图
         carousel.render({
             elem: '#layui-carousel',
@@ -135,20 +136,21 @@ $(document).ready(function () {
         //充值记录点击事件
         var indexRechargeRecord;
         $('#index-recharge-record').click(function () {
+            //加载充值记录数据
+            loadRechargeRecord(element, table);
             indexRechargeRecord = openRecord(layer);
-            //加载数据
         });
         //消费记录点击事件
         var indexConsumptionRecord;
         $('#index-consumption-record').click(function () {
             indexConsumptionRecord = openRecord(layer);
-            //加载数据
+            //加载消费记录数据
         });
         //预约记录点击事件
         var indexAppointmentRecord;
         $('#index-recharge-record').click(function () {
             indexAppointmentRecord = openRecord(layer);
-            //加载数据
+            //加载预约数据
         });
     });
 });
@@ -252,10 +254,7 @@ function loadCode(layer) {
 //成为会员点击事件
 function toMemberClick() {
     //判断用户是否登陆
-    if ($.cookie('userToken') === undefined || $.cookie('userToken').length === 0) {
-        layer.msg('请先登录', {icon: 5});
-        return;
-    }
+    checkLogin();
     $.cookie('flagUser', 'member');
     window.location.href = 'member.html';
 }
@@ -411,3 +410,54 @@ function openRecord(layer) {
     });
 }
 
+//加载充值记录数据
+function loadRechargeRecord(element, table) {
+    //刷新数据
+    table.render({
+        elem: '#index-record-table',
+        height: 200,
+        url: $.cookie('url') + '/selectAllRecharge',
+        where: {
+            token: $.cookie('userToken')
+        },
+        page: true,
+        toolbar: 'default',
+        title: "充值记录",
+        limit: 5,
+        limits: [5, 10],
+        id: 'id-coach',
+        response:
+            {
+                statusCode: 200
+            }
+        ,
+        parseData: function (res) { //res 即为原始返回的数据
+            return {
+                "code": res.code, //解析接口状态
+                "msg": res.message, //解析提示文本
+                "count": res.data.length, //解析数据长度
+                "data": res.data.data //解析数据列表
+            };
+        }
+        ,
+        cols: [[ //表头
+            {type: 'checkbox', width: '10%', fixed: 'left'},
+            {field: 'id', title: 'ID', width: '10%', align: 'center', sort: true}
+            , {field: 'name', title: '姓名', width: '10%', align: 'center'}
+            , {field: 'sex', title: '性别', width: '10%', sort: true}
+            , {field: 'age', title: '年龄', width: '10%', align: 'center', sort: true}
+            , {field: 'role', title: '角色', width: '10%', align: 'center', sort: true}
+            , {field: 'phone', title: '联系方式', align: 'center', width: '20%'}
+            , {fixed: 'right', width: '20%', align: 'center', toolbar: '#bar-coach'}
+        ]]
+    });
+}
+
+//判断登录状态
+function checkLogin() {
+    //判断用户是否登陆
+    if ($.cookie('userToken') === undefined || $.cookie('userToken').length === 0) {
+        layer.msg('请先登录', {icon: 5});
+        return;
+    }
+}

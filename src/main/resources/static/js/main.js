@@ -177,7 +177,6 @@ function coachClick() {
     $.cookie('flag', 'coach');
 }
 
-
 //教练页面头部点击事件
 function clickHeadCoach(table, obj) {
     var checkStatus = table.checkStatus(obj.config.id);
