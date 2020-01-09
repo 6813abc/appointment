@@ -32,14 +32,15 @@ public interface RechargeMapper {
      *
      * @param limit 限制
      * @param index 开始
+     * @param phone 联系方式
      * @return void
      * @date 2019/1/6
      */
-    @Select("select * from recharge limit #{index},#{limit}")
+    @Select("select * from recharge where phone = #{phone} order by create_time desc limit #{index},#{limit}")
     @Results({
             @Result(column = "create_time", property = "createTime"),
     })
-    List<Recharge> selectAllRecharge(Long index, Integer limit);
+    List<Recharge> selectAllRecharge(String phone, Long index, Integer limit);
 
     /**
      * 功能描述:查询数据量

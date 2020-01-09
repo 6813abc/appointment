@@ -1,16 +1,19 @@
 package com.cyg.appointment.service.impl;
 
+import com.cyg.appointment.entity.Consumption;
 import com.cyg.appointment.entity.Member;
 import com.cyg.appointment.entity.User;
 import com.cyg.appointment.exception.BaseResult;
 import com.cyg.appointment.exception.ResultEnum;
 import com.cyg.appointment.exception.ResultUtil;
+import com.cyg.appointment.mapper.ConsumptionMapper;
 import com.cyg.appointment.mapper.MemberMapper;
 import com.cyg.appointment.mapper.UserMapper;
 import com.cyg.appointment.service.MemberService;
 import com.cyg.appointment.util.Constants;
 import com.cyg.appointment.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +33,8 @@ public class MemberServiceImpl implements MemberService {
     private UserMapper userMapper;
     @Autowired
     private MemberMapper memberMapper;
+    @Autowired
+    private ConsumptionMapper consumptionMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -78,6 +83,16 @@ public class MemberServiceImpl implements MemberService {
                 memberMapper.updateMember(member);
             }
         }
+        //消费记录
+        Consumption consumption = new Consumption();
+        String id = DateUtil.getTodayFlow() + "11" + RandomStringUtils.randomAlphanumeric(10);
+        consumption.setId(id);
+        String time = DateUtil.getToDayTime();
+        consumption.setCreateTime(time);
+        consumption.setMoney(money);
+        consumption.setPhone(phone);
+        consumption.setType(Constants.RECHARGE_MEMBER);
+        consumptionMapper.addConsumption(consumption);
         return ResultUtil.success(ResultEnum.OK);
     }
 

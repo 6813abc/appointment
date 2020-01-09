@@ -1,9 +1,11 @@
 package com.cyg.appointment.service.impl;
 
+import com.cyg.appointment.entity.Consumption;
 import com.cyg.appointment.entity.Recharge;
 import com.cyg.appointment.entity.User;
 import com.cyg.appointment.exception.BaseResult;
 import com.cyg.appointment.exception.ResultUtil;
+import com.cyg.appointment.mapper.ConsumptionMapper;
 import com.cyg.appointment.mapper.RechargeMapper;
 import com.cyg.appointment.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +24,25 @@ public class RecordServiceImpl implements RecordService {
 
     @Autowired
     private RechargeMapper rechargeMapper;
+    @Autowired
+    private ConsumptionMapper consumptionMapper;
 
     @Override
-    public BaseResult selectAllRecharge(String token, Long page, Integer limit) {
+    public BaseResult selectAllRecharge(String token, String phone, Long page, Integer limit) {
         Long index = (page - 1) * limit;
-        List<Recharge> recharges = rechargeMapper.selectAllRecharge(index, limit);
+        List<Recharge> recharges = rechargeMapper.selectAllRecharge(phone, index, limit);
         Map<String, Object> map = new HashMap<>(4);
         map.put("length", rechargeMapper.selectLength());
+        map.put("data", recharges);
+        return ResultUtil.success(map);
+    }
+
+    @Override
+    public BaseResult selectAllConsumption(String token, String phone, Long page, Integer limit) {
+        Long index = (page - 1) * limit;
+        List<Consumption> recharges = consumptionMapper.selectAllConsumption(phone, index, limit);
+        Map<String, Object> map = new HashMap<>(4);
+        map.put("length", consumptionMapper.selectLength());
         map.put("data", recharges);
         return ResultUtil.success(map);
     }

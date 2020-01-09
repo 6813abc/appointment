@@ -136,6 +136,7 @@ $(document).ready(function () {
         //充值记录点击事件
         var indexRechargeRecord;
         $('#index-recharge-record').click(function () {
+            $("#recharge-record").addClass("index-record");
             //加载充值记录数据
             loadRechargeRecord(element, table);
             indexRechargeRecord = openRecord(layer);
@@ -143,14 +144,32 @@ $(document).ready(function () {
         //消费记录点击事件
         var indexConsumptionRecord;
         $('#index-consumption-record').click(function () {
-            indexConsumptionRecord = openRecord(layer);
+            $("#consumption-record").addClass("index-record");
             //加载消费记录数据
+            loadConsumptionRecord(element, table);
+            indexConsumptionRecord = openRecord(layer);
         });
         //预约记录点击事件
         var indexAppointmentRecord;
-        $('#index-recharge-record').click(function () {
+        $('#index-appointment-record').click(function () {
+            $("#appointment-record").addClass("index-record");
             indexAppointmentRecord = openRecord(layer);
             //加载预约数据
+        });
+        //弹出框内充值记录点击事件
+        $('#recharge-record').click(function () {
+            //加载数据
+            loadRechargeRecord(element, table);
+        });
+        //弹出框内充值记录点击事件
+        $('#consumption-record').click(function () {
+            //加载数据
+            loadConsumptionRecord(element, table);
+        });
+        //记录弹出框点击变色
+        $(".layui-breadcrumb > a").click(function () {
+            $(".layui-breadcrumb > a").removeClass("index-record");
+            $(this).addClass("index-record");
         });
     });
 });
@@ -404,8 +423,8 @@ function openRecord(layer) {
         type: 1,
         title: '记录',
         content: $('#index-record'),
-        area: ['auto', 'auto'],
-        anim: 1,
+        area: ['1000px', 'auto'],
+        anim: 3,
         maxmin: true
     });
 }
@@ -415,17 +434,21 @@ function loadRechargeRecord(element, table) {
     //刷新数据
     table.render({
         elem: '#index-record-table',
-        height: 200,
+        height: 300,
         url: $.cookie('url') + '/selectAllRecharge',
         where: {
+            phone: localStorage.getItem('userPhone'),
             token: $.cookie('userToken')
         },
         page: true,
-        toolbar: 'default',
-        title: "充值记录",
-        limit: 5,
-        limits: [5, 10],
-        id: 'id-coach',
+        title:
+            "充值记录",
+        limit:
+            10,
+        limits:
+            [10, 20],
+        id:
+            'id-coach',
         response:
             {
                 statusCode: 200
@@ -441,16 +464,62 @@ function loadRechargeRecord(element, table) {
         }
         ,
         cols: [[ //表头
-            {type: 'checkbox', width: '10%', fixed: 'left'},
-            {field: 'id', title: 'ID', width: '10%', align: 'center', sort: true}
-            , {field: 'name', title: '姓名', width: '10%', align: 'center'}
-            , {field: 'sex', title: '性别', width: '10%', sort: true}
-            , {field: 'age', title: '年龄', width: '10%', align: 'center', sort: true}
-            , {field: 'role', title: '角色', width: '10%', align: 'center', sort: true}
-            , {field: 'phone', title: '联系方式', align: 'center', width: '20%'}
-            , {fixed: 'right', width: '20%', align: 'center', toolbar: '#bar-coach'}
+            {field: 'id', title: '订单编号', width: '40%', align: 'center'}
+            , {field: 'money', title: '金额', width: '10%', align: 'center', sort: true}
+            , {field: 'phone', title: '联系方式', align: 'center', width: '20%', sort: true}
+            , {field: 'createTime', title: '创建时间', align: 'center', width: '30%', sort: true}
         ]]
-    });
+    })
+    ;
+}
+
+//加载充值记录数据
+function loadConsumptionRecord(element, table) {
+    //刷新数据
+    table.render({
+        elem: '#index-record-table',
+        height: 300,
+        url: $.cookie('url') + '/selectAllConsumption',
+        where: {
+            phone: localStorage.getItem('userPhone'),
+            token: $.cookie('userToken')
+        },
+        page: true,
+        title:
+            "充值记录",
+        limit:
+            10,
+        limits:
+            [10, 20],
+        id:
+            'id-coach',
+        response:
+            {
+                statusCode: 200
+            }
+        ,
+        parseData: function (res) { //res 即为原始返回的数据
+            return {
+                "code": res.code, //解析接口状态
+                "msg": res.message, //解析提示文本
+                "count": res.data.length, //解析数据长度
+                "data": res.data.data //解析数据列表
+            };
+        }
+        ,
+        cols: [[ //表头
+            {field: 'id', title: '订单编号', width: '30%', align: 'center'}
+            , {field: 'money', title: '金额', width: '10%', align: 'center', sort: true}
+            , {field: 'phone', title: '联系方式', align: 'center', width: '15%', sort: true}
+            , {field: 'createTime', title: '创建时间', align: 'center', width: '25%', sort: true}
+            , {field: 'type', title: '交易类型', align: 'center', width: '20%'}
+        ]]
+    })
+    ;
+}
+
+//记录弹出框点击变色
+function changeColor() {
 }
 
 //判断登录状态

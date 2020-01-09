@@ -279,5 +279,18 @@ html {
     margin: 0 auto;
 }
 
+#index-div-record {
+    margin-top: 10px;
+    text-align: center !important;
+}
+
+#index-record-table {
+    margin-top: 20px;
+}
+
+.index-record {
+    background: yellow;
+}
+
 /*admin*/
 

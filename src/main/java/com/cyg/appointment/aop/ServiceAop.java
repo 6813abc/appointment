@@ -38,12 +38,13 @@ public class ServiceAop {
             HttpServletRequest request = attributes.getRequest();
             log.info("url={}", request.getRequestURL());
         }
-        log.info("args={}", Arrays.toString(joinPoint.getArgs()));
-
+        for (Object o : joinPoint.getArgs()){
+            log.info("args={}", o);
+        }
     }
 
     @AfterReturning(returning = "ret", pointcut = "controllerLog()")
-    public void doafter(Object ret) {
+    public void doAfter(Object ret) {
         log.info("ret={}", ret);
     }
 }

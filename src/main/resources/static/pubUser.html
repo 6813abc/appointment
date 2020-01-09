@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
     <title>AIAPS</title>
     <link href="favicon.ico" rel="shortcut icon">
-    <link href="css/index.css" rel="stylesheet" type="text/css"/>
     <link href="layui/css/layui.css" rel="stylesheet" type="text/css"/>
+    <link href="css/index.css" rel="stylesheet" type="text/css"/>
 
     <script src="js/jquery-1.10.1.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="js/jquery.cookie.js"></script>
@@ -214,11 +214,13 @@
 
 <!--充值消费预约记录-->
 <div id="index-record" style="display: none">
-    <span class="layui-breadcrumb" lay-separator="-">
-      <a href="javascript:;">充值记录</a>
-      <a href="javascript:;">消费记录</a>
-      <a href="javascript:;">预约记录</a>
-    </span>
+    <div id="index-div-record">
+        <span class="layui-breadcrumb" lay-separator="|">
+          <a href="javascript:;" id="recharge-record">充值记录</a>
+          <a href="javascript:;" id="consumption-record">消费记录</a>
+          <a href="javascript:;" id="appointment-record">预约记录</a>
+        </span>
+    </div>
     <table id='index-record-table' lay-filter='index-div-table'></table>
 </div>
 </body>

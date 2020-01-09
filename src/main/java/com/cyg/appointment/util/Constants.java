@@ -23,4 +23,6 @@ public class Constants {
     public static final Integer HJ_GRADE = 5000;
     public static final Integer ZS_GRADE = 20000;
     public static final Integer OPENM_EMBERSHIP = 1;
+
+    public static final String RECHARGE_MEMBER = "充值会员";
 }

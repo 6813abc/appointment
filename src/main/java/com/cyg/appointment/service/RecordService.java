@@ -19,8 +19,21 @@ public interface RecordService {
      * @param token token
      * @param page  页数
      * @param limit 限制
+     * @param phone 联系方式
      * @return com.cyg.appointment.exception.BaseResult
      * @date 2020/1/4
      */
-    BaseResult selectAllRecharge(String token, Long page, Integer limit);
+    BaseResult selectAllRecharge(String token, String phone, Long page, Integer limit);
+
+    /**
+     * 功能描述:
+     *
+     * @param token token
+     * @param page  页数
+     * @param limit 限制
+     * @param phone 联系方式
+     * @return com.cyg.appointment.exception.BaseResult
+     * @date 2020/1/4
+     */
+    BaseResult selectAllConsumption(String token, String phone, Long page, Integer limit);
 }
