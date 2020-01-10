@@ -173,3 +173,11 @@ em, i {
     float: left;
 }
 
+.layui-table img {
+    width: 56%;
+}
+
+#upload-equip-type-button{
+    position: absolute;
+    bottom: 0;
+}

@@ -72,10 +72,8 @@ $(document).ready(function () {
             elem: '#index-register-head',
             url: '/api/upload/',
             auto: false,//选择文件后不自动上传,
-            // bindAction: '#testListAction', //指向一个按钮触发上传,
             choose: function (obj) {
                 obj.preview(function (index, file, result) {
-                    //得到文件base64编码，比如图片
                     code = result;
                     $("#index-register-head").attr("src", result);
                 });
