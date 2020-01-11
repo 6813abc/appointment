@@ -2,11 +2,12 @@
 $(document).ready(function () {
     $.cookie('url', 'http://127.0.0.1:8095');
 
-    layui.use(['element', 'table', 'upload', 'layer'], function () {
-        var layer = layui.layer;
-        var element = layui.element;
-        var table = layui.table;
-        var upload = layui.upload;
+    layui.use(['element', 'table', 'upload', 'layer', 'form'], function () {
+        let layer = layui.layer;
+        let element = layui.element;
+        let table = layui.table;
+        let upload = layui.upload;
+        let form = layui.form;
 
         //====================================用户管理================================================
         //客户查询点击事件
@@ -24,7 +25,7 @@ $(document).ready(function () {
             equipTypeClick();
         });
         //得到选择上传器材图片
-        var imgCode;
+        let imgCode;
         upload.render({
             elem: '#upload-equip-type-button',
             auto: false,//选择文件后不自动上传,
@@ -34,9 +35,18 @@ $(document).ready(function () {
                     //修改头像
                     $("#upload-equip-type-img").attr("src", result);
                     imgCode = result;
+                    dealImage(imgCode, 500, useImg);
+                    console.log(imgCode.length);
                 });
             }
         });
+
+        //压缩图片的回掉方法
+        function useImg(base64) {
+            imgCode = base64;
+            console.log(imgCode.length);
+        }
+
         //新增器材种类点击事件
         $('#equip-type-submit').click(function () {
             addEquipType(layer, imgCode, 1, open);
@@ -52,7 +62,7 @@ $(document).ready(function () {
         //监听表格头部点击
         var open;
         table.on('toolbar(main-div-table)', function (obj) {
-            open = clickHead(table, obj, layer);
+            open = clickHead(table, obj, layer, form);
         });
 
         //监听行工具事件
@@ -292,19 +302,48 @@ function openEquipTypeAdd(layer) {
         type: 1,
         title: '新增器材种类',
         content: $('#equip-type-add'),
-        area: ['600px', 'auto'],
+        area: ['auto', 'auto'],
         anim: 1,
         maxmin: true
     });
 }
 
+//加载可选的属性
+function selectEquipTypeAttribute(layer, form) {
+    let url = $.cookie('url') + "/selectAllSpecific";
+    let token = $.cookie('token');
+    $.ajax({
+        url: url,
+        type: "post",
+        data: {
+            token: token,
+        },
+        success: function (data) {
+            if (data.code === '200') {
+                console.log("加载属性选项成功");
+                if (data.data.length > 0) {
+                    for (let i = 0; i < data.data.length; i++) {
+                        $("#equip-type-attribute").append("<option value='" + data.data[i].id + "'>" + data.data[i].name + "</option>");
+                    }
+                }
+            } else {
+                layer.msg(data.message, {icon: 5});
+            }
+        },
+        error: function (data) {
+            layer.msg(data.status, {icon: 5});
+        }
+    });
+    form.render();
+}
+
 //新增器材种类
 function addEquipType(layer, result, choose, open) {
-    var url = $.cookie('url') + "/addEquipTye";
-    var token = $.cookie('token');
-    var name = $('#equip-type-name').val();
-    var code = $('#equip-type-code').val();
-    var unitPrice = $('#equip-type-price').val();
+    let url = $.cookie('url') + "/addEquipTye";
+    let token = $.cookie('token');
+    let name = $('#equip-type-name').val();
+    let code = $('#equip-type-code').val();
+    let unitPrice = $('#equip-type-price').val();
     $.ajax({
         url: url,
         type: "post",
@@ -383,13 +422,14 @@ function fold(table) {
 }
 
 //表格头部点击事件
-function clickHead(table, obj, layer) {
+function clickHead(table, obj, layer, form) {
 
     var checkStatus = table.checkStatus(obj.config.id);
     var data = checkStatus.data;
     console.log(data);
     switch (obj.event) {
         case 'addEquipType':
+            selectEquipTypeAttribute(layer,form);
             return openEquipTypeAdd(layer);
             break;
         case 'delete':
@@ -406,11 +446,11 @@ function clickHead(table, obj, layer) {
     ;
 }
 
-//鼠标悬浮显示头像大图
+//鼠标悬浮显示头像大图specific
 function hoverOpenEquipType() {
     var img_show = null;
     $('td img').hover(function () {
-        var img = "<img class='img_msg' src='" + $(this).attr('src') + "' style='width:100%;' />";
+        var img = "<img class='img_msg' src='" + $(this).attr('src') + "' style='width:300%;' />";
         img_show = layer.tips(img, this, {
             tips: [2, 'rgba(41,41,41,.0)']
             , area: ['12%']
@@ -583,5 +623,47 @@ function logout() {
     $.removeCookie('role');
     $.removeCookie('flag')
     window.location.href = 'login.html';
+}
+
+//压缩图片
+function dealImage(base64, w, callback) {
+    var newImage = new Image();
+    var quality = 0.6;    //压缩系数0-1之间
+    newImage.src = base64;
+    newImage.setAttribute("crossOrigin", 'Anonymous');	//url为外域时需要
+    var imgWidth, imgHeight;
+    newImage.onload = function () {
+        imgWidth = this.width;
+        imgHeight = this.height;
+        var canvas = document.createElement("canvas");
+        var ctx = canvas.getContext("2d");
+        if (Math.max(imgWidth, imgHeight) > w) {
+            if (imgWidth > imgHeight) {
+                canvas.width = w;
+                canvas.height = w * imgHeight / imgWidth;
+            } else {
+                canvas.height = w;
+                canvas.width = w * imgWidth / imgHeight;
+            }
+        } else {
+            canvas.width = imgWidth;
+            canvas.height = imgHeight;
+            quality = 0.6;
+        }
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
+        var base64 = canvas.toDataURL("image/jpeg", quality); //压缩语句
+        // 如想确保图片压缩到自己想要的尺寸,如要求在50-150kb之间，请加以下语句，quality初始值根据情况自定
+        // while (base64.length / 1024 > 150) {
+        // 	quality -= 0.01;
+        // 	base64 = canvas.toDataURL("image/jpeg", quality);
+        // }
+        // 防止最后一次压缩低于最低尺寸，只要quality递减合理，无需考虑
+        // while (base64.length / 1024 < 50) {
+        // 	quality += 0.001;
+        // 	base64 = canvas.toDataURL("image/jpeg", quality);
+        // }
+        callback(base64);//必须通过回调函数返回，否则无法及时拿到该值
+    }
 }
 

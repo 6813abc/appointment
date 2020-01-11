@@ -15,6 +15,7 @@ import com.cyg.appointment.util.JedisUtil;
 import com.cyg.appointment.util.ValidateCodeUtil;
 import com.cyg.appointment.vo.AdminSelect;
 import com.sun.org.apache.bcel.internal.generic.NEW;
+import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.BeanUtils;

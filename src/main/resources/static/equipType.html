@@ -8,39 +8,57 @@
 <body>
 <!--新增equipType弹出框-->
 <div id="equip-type-add" style="display: none">
-    <div class="layui-form-item">
-        <div class="layui-block">
-            <label class="layui-form-label">器材名称</label>
-            <div class="layui-input-block">
-                <input type="text" id="equip-type-name" autocomplete="off" class="layui-input">
+    <div class="layui-row">
+        <div class="layui-col-md6 layui-form-item">
+            <div class="layui-block">
+                <label class="layui-form-label">器材图片</label>
+                <div class="layui-input-block">
+                    <div class="layui-upload">
+                        <div class="layui-upload-list">
+                            <img class="layui-upload-img" id="upload-equip-type-img" style="width: 80px;height: 80px">
+                            <button type="button" id="upload-equip-type-button">上传图片</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">器材名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="equip-type-name" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">器材编码</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="equip-type-code" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">进货单价</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="equip-type-price" placeholder="￥" autocomplete="off" class="layui-input">
+                </div>
             </div>
         </div>
-        <div class="layui-block">
-            <label class="layui-form-label">器材编码</label>
-            <div class="layui-input-block">
-                <input type="text" id="equip-type-code" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-block">
-            <label class="layui-form-label">进货单价</label>
-            <div class="layui-input-block">
-                <input type="text" id="equip-type-price" placeholder="￥" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-block">
-            <label class="layui-form-label">器材图片</label>
-            <div class="layui-input-block">
-                <div class="layui-upload">
-                    <div class="layui-upload-list">
-                        <img class="layui-upload-img" id="upload-equip-type-img" style="width: 80px;height: 80px">
-                        <button type="button" id="upload-equip-type-button">上传图片</button>
+        <div class="layui-col-md6">
+            <div>
+                <div class="layui-block">
+                    <label class="layui-form-label">其他属性</label>
+                    <div class="layui-input-block">
+                        <select name="equip-type-attribute" id="equip-type-attribute" lay-search="">
+                            <option value="">选择一个属性</option>
+                        </select>
+                        <button type="button" class="layui-btn layui-btn-primary layui-btn-sm layui-btn-radius">添加属性
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="layui-form-item">
-            <div class="layui-input-block">
-                <button type="submit" class="layui-btn" id="equip-type-submit">立即提交</button>
+        <div class="layui-col-md12 layui-form-item">
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button type="button" class="layui-btn" id="equip-type-submit">立即提交</button>
+                </div>
             </div>
         </div>
     </div>
