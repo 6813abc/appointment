@@ -42,17 +42,42 @@
         </div>
         <div class="layui-col-md6">
             <div>
-                <div class="layui-block">
+                <div class="layui-inline">
                     <label class="layui-form-label">其他属性</label>
-                    <div class="layui-input-block">
-                        <select name="equip-type-attribute" id="equip-type-attribute" lay-search="">
-                            <option value="">选择一个属性</option>
-                        </select>
-                        <button type="button" class="layui-btn layui-btn-primary layui-btn-sm layui-btn-radius">添加属性
-                        </button>
+                    <div class="layui-input-inline">
+                        <form class="layui-form" action="">
+                            <select name="equip-type-attribute" id="equip-type-attribute"
+                                    lay-filter='equip-type-attribute' lay-search="">
+                                <option value="">请选择</option>
+                            </select>
+                        </form>
                     </div>
                 </div>
+                <button type="button" class="layui-btn layui-btn-primary layui-btn-sm layui-btn-radius">添加
+                </button>
+                <div class="layui-inline">
+                    <label class="layui-form-label" id="equip-type-label-name">名称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="equip-type-label-value" placeholder="请输入值" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <button type="button" id="equip-type-add-submit" class="layui-btn layui-btn-primary layui-btn-sm layui-btn-radius">新增
+                </button>
             </div>
+            <table class="layui-table" id="equip-type-table" lay-size="sm">
+                <colgroup>
+                    <col width="150">
+                    <col width="150">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>属性名称</th>
+                    <th>属性值</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
         </div>
         <div class="layui-col-md12 layui-form-item">
             <div class="layui-form-item">

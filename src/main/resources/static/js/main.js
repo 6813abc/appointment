@@ -51,6 +51,19 @@ $(document).ready(function () {
         $('#equip-type-submit').click(function () {
             addEquipType(layer, imgCode, 1, open);
         });
+        //下拉框选择事件
+        let select_text;
+        let select_val;
+        form.on('select(equip-type-attribute)', function (data) {
+            select_text = data.elem[data.elem.selectedIndex].text;
+            select_val = data.value;
+            //修改输入框的显示
+            $('#equip-type-label-name').html(select_text);
+        });
+        //将属性添加到表格
+        $('#equip-type-add-submit').click(function () {
+            equipTypeAddSubmit(layer, select_text);
+        });
         //====================================公共部分================================================
         //初始化页面
         init(layer, element, table);
@@ -302,7 +315,7 @@ function openEquipTypeAdd(layer) {
         type: 1,
         title: '新增器材种类',
         content: $('#equip-type-add'),
-        area: ['auto', 'auto'],
+        area: ['800px', 'auto'],
         anim: 1,
         maxmin: true
     });
@@ -325,6 +338,7 @@ function selectEquipTypeAttribute(layer, form) {
                     for (let i = 0; i < data.data.length; i++) {
                         $("#equip-type-attribute").append("<option value='" + data.data[i].id + "'>" + data.data[i].name + "</option>");
                     }
+                    form.render('select');
                 }
             } else {
                 layer.msg(data.message, {icon: 5});
@@ -334,7 +348,6 @@ function selectEquipTypeAttribute(layer, form) {
             layer.msg(data.status, {icon: 5});
         }
     });
-    form.render();
 }
 
 //新增器材种类
@@ -369,6 +382,34 @@ function addEquipType(layer, result, choose, open) {
             layer.msg(data.status, {icon: 5});
         }
     });
+}
+
+//将属性添加到表格
+function equipTypeAddSubmit(layer, select_text) {
+    let value = $('#equip-type-label-value').val();
+    if (value.length === 0) {
+        layer.msg('请输入', {icon: 5});
+        return;
+    }
+    let flag = 0;
+    //校验是否已经添加
+    $('#equip-type-table tr').each(function (i) {
+        $(this).children('td').each(function (j) {
+            if (j === 0) {
+                if ($(this).text() === select_text) {
+                    layer.msg('该属性已经添加', {icon: 5});
+                    flag = 1;
+                }
+            }
+        });
+    });
+    if (flag === 1) {
+        return;
+    }
+    //新增表格
+    $("#equip-type-table").append("<tr><td>" + select_text + "</td><td>" + value + "</td></tr>");
+    //清空输入框
+    $('#equip-type-label-value').val("");
 }
 
 //=====================================公共部分===============================================
@@ -429,7 +470,7 @@ function clickHead(table, obj, layer, form) {
     console.log(data);
     switch (obj.event) {
         case 'addEquipType':
-            selectEquipTypeAttribute(layer,form);
+            selectEquipTypeAttribute(layer, form);
             return openEquipTypeAdd(layer);
             break;
         case 'delete':
