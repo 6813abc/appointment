@@ -5,6 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+/**
+ * equip种类属性
+ *
+ * @author cyg
+ * @date 2020/1/9 15:07
+ **/
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

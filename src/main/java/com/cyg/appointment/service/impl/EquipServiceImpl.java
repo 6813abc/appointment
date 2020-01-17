@@ -3,12 +3,14 @@ package com.cyg.appointment.service.impl;
 import com.cyg.appointment.dto.EquipTypeAddDto;
 import com.cyg.appointment.dto.EquipTypeUpdateDto;
 import com.cyg.appointment.entity.EquipType;
+import com.cyg.appointment.entity.EquipTypeSpecific;
 import com.cyg.appointment.entity.File;
 import com.cyg.appointment.exception.BaseResult;
 import com.cyg.appointment.exception.ResultEnum;
 import com.cyg.appointment.exception.ResultUtil;
 import com.cyg.appointment.mapper.EquipMapper;
 import com.cyg.appointment.mapper.FileMapper;
+import com.cyg.appointment.mapper.SpecificMapper;
 import com.cyg.appointment.service.EquipService;
 import com.cyg.appointment.util.DateUtil;
 import com.cyg.appointment.vo.EquipTypeSelectVo;
@@ -34,6 +36,8 @@ public class EquipServiceImpl implements EquipService {
     private EquipMapper equipMapper;
     @Autowired
     private FileMapper fileMapper;
+    @Autowired
+    private SpecificMapper specificMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -48,6 +52,12 @@ public class EquipServiceImpl implements EquipService {
         equipType.setCreateTime(DateUtil.getToDayTime());
         //新增器材种类
         equipMapper.addEquipType(equipType);
+        //新增器材种类属性
+        List<EquipTypeSpecific> equipTypeSpecifics = equipTypeAddDto.getEquipTypeSpecifics();
+        for (EquipTypeSpecific equipTypeSpecific : equipTypeSpecifics) {
+            equipTypeSpecific.setEquipTypeId(equipType.getId());
+            specificMapper.addEquipTypeSpecific(equipTypeSpecific);
+        }
         return ResultUtil.success(ResultEnum.OK);
     }
 

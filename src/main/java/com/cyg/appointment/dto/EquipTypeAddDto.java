@@ -1,9 +1,12 @@
 package com.cyg.appointment.dto;
 
+import com.cyg.appointment.entity.EquipTypeSpecific;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import java.util.List;
 
 /**
  * equip种类
@@ -24,4 +27,5 @@ public class EquipTypeAddDto {
     private String name;
     private Long unitPrice;
     private String pictureCode;
+    private List<EquipTypeSpecific> equipTypeSpecifics;
 }

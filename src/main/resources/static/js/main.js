@@ -357,6 +357,7 @@ function addEquipType(layer, result, choose, open) {
     let name = $('#equip-type-name').val();
     let code = $('#equip-type-code').val();
     let unitPrice = $('#equip-type-price').val();
+
     $.ajax({
         url: url,
         type: "post",
