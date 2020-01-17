@@ -1,7 +1,7 @@
 //全局变量，区分在哪个页面
 $(document).ready(function () {
-    $.cookie('url', 'http://127.0.0.1:8095');
-
+    //$.cookie('url', 'http://127.0.0.1:8095');
+    $.cookie('url', '');
     layui.use(['element', 'table', 'upload', 'layer', 'form'], function () {
         let layer = layui.layer;
         let element = layui.element;

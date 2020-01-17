@@ -1,5 +1,6 @@
 $(document).ready(function () {
-    $.cookie('url', 'http://127.0.0.1:8095');
+    //$.cookie('url', 'http://127.0.0.1:8095');
+    $.cookie('url', '');
     layui.use(['element', 'carousel', 'layer', 'form', 'upload', 'table'], function () {
         var element = layui.element;
         var carousel = layui.carousel;
