@@ -23,7 +23,6 @@ public interface MemberMapper {
      */
     @Select("select * from member where id = #{id}")
     @Results({
-            @Result(column = "user_id", property = "userId"),
             @Result(column = "member_date", property = "memberDate"),
             @Result(column = "up_to_date", property = "upToDate"),
     })
@@ -36,12 +35,20 @@ public interface MemberMapper {
      * @return void
      * @date 2019/12/28
      */
-    @Insert("insert into member (user_id,grade,integral,member_date,up_to_date) " +
-            "value (#{m.userId},#{m.grade},#{m.integral},#{m.memberDate},#{m.upToDate})")
+    @Insert("insert into member (grade,integral,member_date,up_to_date) " +
+            "value (#{m.grade},#{m.integral},#{m.memberDate},#{m.upToDate})")
     @Options(useGeneratedKeys = true, keyProperty = "m.id")
     void addMember(@Param("m") Member member);
 
-    @Update("update member set user_id= #{m.userId},grade= #{m.grade},integral= #{m.integral}," +
+    /**
+     * 功能描述:修改member
+     *
+     * @param member 会员
+     * @return void
+     * @author cyg
+     * @date 2020/1/19
+     */
+    @Update("update member set grade= #{m.grade},integral= #{m.integral}," +
             "member_date= #{m.memberDate},up_to_date= #{m.upToDate}")
     void updateMember(@Param("m") Member member);
 }

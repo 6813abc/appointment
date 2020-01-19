@@ -67,7 +67,6 @@ public class MemberServiceImpl implements MemberService {
                 //会员信息为空,新增会员
                 Member member = new Member();
                 member.setIntegral(integral);
-                member.setUserId(user.getUserId());
                 member.setGrade(getGrade(integral));
                 member.setMemberDate(DateUtil.getToDayTime());
                 member.setUpToDate(DateUtil.getTime(Integer.parseInt(data) * 30));

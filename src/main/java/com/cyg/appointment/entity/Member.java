@@ -18,7 +18,6 @@ import lombok.ToString;
 public class Member {
 
     private Long id;
-    private Long userId;
     /**
      * 等级
      **/
