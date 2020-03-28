@@ -44,6 +44,18 @@ public interface AdminMapper {
     List<Admin> selectAll(Long index, Integer limit);
 
     /**
+     * 功能描述:查询所有教练
+     *
+     * @return java.lang.String
+     * @date 2019/12/28
+     */
+    @Select("select * from admin where role = '教练'")
+    @Results({
+            @Result(column = "img_id", property = "imgId"),
+    })
+    List<Admin> selectAllCoach2();
+
+    /**
      * 功能描述:查询数据量
      *
      * @return java.lang.String

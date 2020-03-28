@@ -1,6 +1,7 @@
 package com.cyg.appointment.service.impl;
 
 import com.cyg.appointment.config.JwtToken;
+import com.cyg.appointment.dto.AdminDto;
 import com.cyg.appointment.entity.Admin;
 import com.cyg.appointment.entity.File;
 import com.cyg.appointment.entity.User;
@@ -23,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,6 +91,20 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public BaseResult selectAllCoach2(String token) {
+        List<Admin> admins = adminMapper.selectAllCoach2();
+        List<AdminDto> adminDtos = new ArrayList<>();
+        for (Admin admin : admins) {
+            AdminDto adminDto = new AdminDto();
+            BeanUtils.copyProperties(admin, adminDto);
+            File file = fileMapper.selectById(admin.getImgId());
+            adminDto.setCode(file.getBase64());
+            adminDtos.add(adminDto);
+        }
+        return ResultUtil.success(adminDtos);
+    }
+
+    @Override
     public BaseResult selectByPhone(String token, String phone) {
         Admin admin = adminMapper.getAdminByPhone(phone);
         AdminSelect adminSelect = new AdminSelect();
@@ -133,7 +149,7 @@ public class AdminServiceImpl implements AdminService {
         if (!admin.getPassword().equals(oldPassword)) {
             return ResultUtil.error(ResultEnum.PASSWORD_ERROR);
         }
-        adminMapper.updatePassword(phone,newPassword);
+        adminMapper.updatePassword(phone, newPassword);
         return ResultUtil.success(ResultEnum.OK);
     }
 }

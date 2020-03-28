@@ -66,12 +66,12 @@ document.writeln("                        <dd><a href=\'javascript:;\' id=\'admi
 document.writeln("                        <dd><a href=\'javascript:;\' id=\'admin-equip-type\'><span class=\'cite\'>器材种类</span></a></dd>");
 document.writeln("                    </dl>");
 document.writeln("                </li>");
-document.writeln("                <li class=\'layui-nav-item\'>");
+document.writeln("                <li class=\'layui-nav-item\' id=\'admin-field\'>");
 document.writeln("                    <a href=\'javascript:;\'><i class=\'layui-icon\'>&#xe715;</i> <span");
 document.writeln("                            class=\'cite\'>场地<em>管理</em></span></a>");
 document.writeln("                    <dl class=\'layui-nav-child\'>");
-document.writeln("                        <dd><a href=\'javascript:;\' id=\'admin-filed-main\'><span class=\'cite\'>场地查询</span></a></dd>");
-document.writeln("                        <dd><a href=\'javascript:;\'><span class=\'cite\'>场地分析</span></a></dd>");
+document.writeln("                        <dd><a href=\'javascript:;\' id=\'admin-field-main\'><span class=\'cite\'>场地查询</span></a></dd>");
+document.writeln("                        <dd><a href=\'javascript:; id=\'admin-field-analyse\'\'><span class=\'cite\'>场地分析</span></a></dd>");
 document.writeln("                    </dl>");
 document.writeln("                </li>");
 document.writeln("            </ul>");

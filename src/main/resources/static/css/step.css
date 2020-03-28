@@ -1,0 +1,236 @@
+li {
+    list-style: none;
+}
+
+/* 导航菜单 */
+.nav_tab .nav {
+    display: flex;
+}
+
+.nav_tab .nav li {
+    flex: 1;
+    text-align: center;
+    background: #cdd3f8;
+    padding: 15px 10px;
+    color: #fff;
+}
+
+.nav_tab .nav li.active {
+    color: #fff;
+    background: #74778c;
+}
+
+.nav_tab .nav li span {
+    margin-left: 10px;
+    float: right;
+}
+
+/* 内容公共 */
+.content {
+    padding: 15px;
+    display: none;
+    position: relative;
+}
+
+.content > h5 {
+    color: #0089ff;
+    padding: 10px 0;
+    font-size: 16px;
+}
+
+.content.active {
+    display: block;
+}
+
+.modal_warp {
+    border: 1px solid #a9a9a9;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+/* 时间轴 */
+.timeline {
+    background: #fff url(../img/timeline-line.png) repeat-y 10px;
+    width: 80px;
+    font-size: 20px;
+    position: absolute;
+    right: 0;
+    top: 40px;
+    display: none;
+}
+
+.timeline .year {
+    padding: 0;
+    margin: 0;
+}
+
+.timeline .year li .year-button {
+    cursor: pointer;
+    background: url(../img/timeline-bg.png) 0px -175px no-repeat;
+    height: 25px;
+    padding-left: 22px;
+    margin-left: 8px;
+    line-height: 25px;
+}
+
+.timeline .year li .year-button:hover {
+    background: url(../img/timeline-bg.png) 0px -29px no-repeat
+}
+
+.timeline .year > .active .year-button {
+    background: url(../img/timeline-bg.png) 0px 0px no-repeat;
+    color: #FFF;
+}
+
+.timeline .year > .active .year-button:hover {
+    background: url(../img/timeline-bg.png) 0px 0px no-repeat;
+    color: #FFF;
+}
+
+.timeline .month {
+    display: none;
+    margin-left: 7px;
+    padding: 0;
+}
+
+.timeline .active > .month {
+    display: block
+}
+
+.timeline .month > li {
+    cursor: pointer;
+    height: 25px;
+    padding-right: 25px;
+    line-height: 25px;
+    text-align: right;
+}
+
+.timeline .month > li a {
+    color: #000000;
+}
+
+.timeline .month > li.active {
+    background: url(../img/timeline-bg.png) 0px -89px no-repeat;
+}
+
+.timeline .month > li.active a {
+    color: #FFF;
+}
+
+.timeline .month > li:hover {
+    background: url(../img/timeline-bg.png) 0px -119px no-repeat;
+}
+
+.timeline .month > li.active:hover {
+    background: url(../img/timeline-bg.png) 0px -89px no-repeat;
+}
+
+/* 第三步 */
+.modal_warp .zd label {
+    width: 20%;
+    margin-bottom: 10px;
+}
+
+.btn-group {
+    width: 100%;
+    padding: 0 15px;
+}
+
+/* 第四步 */
+.file_text {
+    width: 95%;
+    padding: 0 10px;
+}
+
+.file_btn {
+    display: inline-block;
+    width: 3%;
+    border: 1px solid #707070;
+    text-align: center;
+    height: 22px;
+    line-height: 21px;;
+}
+
+.file_btn:hover {
+    cursor: pointer;
+}
+
+.sheet_warp {
+    margin-top: 10px;
+}
+
+.sheet_warp ul {
+    width: 85%;
+    display: inline-block;
+    padding-left: 10px;
+    border: 1px solid #a9a9a9;
+    min-height: 300px;
+}
+
+.sheet_warp .btn_gn {
+    display: inline-block;
+    width: 14%;
+}
+
+.sheet_warp .btn_gn .btn {
+    width: 84px;
+    padding: 2px;
+}
+
+.sheet_warp .btn_gn .btn:first-child {
+    margin-bottom: 10px;
+}
+
+#next_btn {
+    margin-right: 10px;
+}
+
+/* 第五步 */
+.head p label {
+    width: 15%;
+    height: 28px;
+    line-height: 28px;
+}
+
+.head p select {
+    width: 84%;
+    height: 28px;
+}
+
+/* 第五步 */
+.table tbody tr td select {
+    width: 100%;
+}
+
+/* 第六步 */
+.report {
+    width: 100%;
+    height: 150px;
+    border: 1px solid #a9a9a9;
+    background: #eee;
+    overflow-y: scroll;
+}
+
+.progress_bar {
+    position: relative;
+    height: 20px;
+    border: 1px solid #a9a9a9;
+    margin-top: 30px;
+}
+
+.progress_bar p {
+    position: absolute;
+    width: 3%;
+    background: #5199d7;
+    height: 20px;
+}
+
+.progress_bar .xx {
+    width: 30px;
+    height: 30px;
+    background: url(../img/xx.gif) no-repeat center;
+    background-size: cover;
+    position: absolute;
+    top: -30px;
+    left: calc(3% - 15px);
+}

@@ -52,12 +52,6 @@ public class EquipServiceImpl implements EquipService {
         equipType.setCreateTime(DateUtil.getToDayTime());
         //新增器材种类
         equipMapper.addEquipType(equipType);
-        //新增器材种类属性
-        List<EquipTypeSpecific> equipTypeSpecifics = equipTypeAddDto.getEquipTypeSpecifics();
-        for (EquipTypeSpecific equipTypeSpecific : equipTypeSpecifics) {
-            equipTypeSpecific.setEquipTypeId(equipType.getId());
-            specificMapper.addEquipTypeSpecific(equipTypeSpecific);
-        }
         return ResultUtil.success(ResultEnum.OK);
     }
 

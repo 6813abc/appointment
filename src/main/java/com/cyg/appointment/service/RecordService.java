@@ -1,9 +1,6 @@
 package com.cyg.appointment.service;
 
-import com.cyg.appointment.dto.UserAdd;
 import com.cyg.appointment.exception.BaseResult;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @Description: 记录

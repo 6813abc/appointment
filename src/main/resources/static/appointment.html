@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <title>AIAPS</title>
+    <link rel="stylesheet" type="text/css" href="statics/css/style.css"/>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link  rel="stylesheet" href="css/step.css" >
+    <script src="js/pubUser.js" type="text/javascript"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/step.js"></script>
+<body style="background: #E0E0E0">
+<div class="layui-row">
+    <div class="layui-col-md1">
+        -
+    </div>
+    <div class="layui-col-md10">
+        <!--步骤-->
+        <div id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">预约</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="nav_tab">
+                            <ul class="nav" id="nav">
+                                <li class="active">选择教练<span class="glyphicon glyphicon-arrow-right"></span></li>
+                                <li>选择场地<span class="glyphicon glyphicon-arrow-right"/></li>
+                                <li>选择器材<span class="glyphicon glyphicon-arrow-right"/></li>
+                                <li>信息确认</li>
+                            </ul>
+                        </div>
+                        <div class="btn-group">
+                            <button id="before_btn" class="btn btn-danger pull-left" disabled>上一步</button>
+                            <button id="next_btn" class="btn btn-success pull-right">下一步</button>
+                        </div>
+                        <div class="tab-content" id="tab-content">
+                            <div class="content active">
+                                <div class="main">
+                                    <div class="dy-content">
+                                        <div class="dy-videos">
+                                            <ul class="dy-video-list">
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="content">
+                                <h5>请选择一个所需的导入模式</h5>
+                                <div class="modal_warp">
+                                    <p>导入模式：</p>
+                                    <div class="radio_btn">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="optionsmodal">
+                                                添加：添加记录到目标表
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="optionsmodal">
+                                                更新：更新目标和源记录相符的数据
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="optionsmodal">
+                                                添加或更新：如果目标存在相同距离，更新它。否则，添加他
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="optionsmodal" checked>
+                                                删除：删除目标中和源记录相符的数据
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="optionsmodal">
+                                                复制：删除目标全部记录，并从源重新导入
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="content">
+                                <h5>选择开始行</h5>
+                                <div class="modal_warp">
+                                    <div class="zd">
+                                        <label>字段名行：</label>
+                                        <input type="text"/>
+                                    </div>
+                                    <div class="zd">
+                                        <label>第一个数据行：</label>
+                                        <input type="text"/>
+                                    </div>
+                                    <div class="zd">
+                                        <label>最后一个数据行：</label>
+                                        <input type="text"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="content">
+                                <h5>请上传导入文件</h5>
+                                <div class="modal_warp">
+                                    <p>导入从：</p>
+                                    <input type="text" class="file_text" id="file_text"/>
+                                    <span class="file_btn" id="file_btn">...</span>
+                                    <input type="file" id="file_o" class="hidden"/>
+                                    <div class="sheet_warp">
+                                        <ul id="sel">
+                                            <li>
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input type="checkbox"/>sheet1
+                                                    </label>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input type="checkbox"/>sheet2
+                                                    </label>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <div class="btn_gn">
+                                            <button class="btn btn-xs" id="all_sel">全选</button>
+                                            <button class="btn btn-xs" id="all_nosel">全部取消全选</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="layui-col-md1">
+    </div>
+</div>
+</body>
+
+</html>

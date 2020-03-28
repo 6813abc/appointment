@@ -1,6 +1,6 @@
 $(document).ready(function () {
-    //$.cookie('url', 'http://127.0.0.1:8095');
-    $.cookie('url', '');
+    $.cookie('url', 'http://127.0.0.1:8095');
+    //$.cookie('url', '');
     layui.use(['element', 'carousel', 'layer', 'form', 'upload', 'table'], function () {
         var element = layui.element;
         var carousel = layui.carousel;
@@ -96,6 +96,12 @@ $(document).ready(function () {
                 toMemberClick();
             }
         );
+        //预约点击
+        $('#index-to-appointment').click(function () {
+                toAppointmentClick();
+            }
+        );
+
         //续费1个月点击
         $('#renew1').click(function () {
                 renewMember(1);
@@ -189,6 +195,11 @@ function init() {
             $("#member-msg").html(localStorage.getItem('userName'));
         } else if ($.cookie('flagUser') === 'index') {
             $('#index-index').addClass('layui-this');
+        } else if ($.cookie('flagUser') === 'appointment') {
+            //初始化步骤
+            $('#index-to-appointment').addClass('layui-this');
+            //加载教练信息、器材信息、场地信息,用来供用户选择
+            initCoach();
         } else {
             $('#index-to-member').addClass('layui-this');
         }
@@ -275,6 +286,14 @@ function toMemberClick() {
     checkLogin();
     $.cookie('flagUser', 'member');
     window.location.href = 'member.html';
+}
+
+//我要预约点击事件
+function toAppointmentClick() {
+    //判断用户是否登陆
+    checkLogin();
+    $.cookie('flagUser', 'appointment');
+    window.location.href = 'appointment.html';
 }
 
 //首页点击事件
@@ -528,4 +547,54 @@ function checkLogin() {
         layer.msg('请先登录', {icon: 5});
         return;
     }
+}
+
+//初始化教练状态
+function initCoach() {
+    var url = $.cookie('url') + "/selectAllCoach2";
+    $.ajax({
+        url: url,
+        data: {
+            token: $.cookie('userToken'),
+            phone: localStorage.getItem('userPhone'),
+            page: 1,
+            limit: 100
+        },
+        async: false,
+        success: function (data) {
+            //定义每行的长度
+            var len = 5;
+            if (data.code === '200') {
+                var list = data.data;
+                for (var i = 0; i < list.length; i++) {
+                    $('.dy-video-list').append("  <li data- class=\"dy-video-item dy-video-meta-right\">\n" +
+                        "                            <div class=\"dy-video-meta\">\n" +
+                        "                                <div class=\"dy-video-meta-bg\"> </div>\n" +
+                        "                                <div class=\"dy-video-meta-dy\">\n" +
+                        "                                    <h4 class=\"dy-video-title\"> <a>" + list[i].name + "</a> </h4>\n" +
+                        "                                    <span class=\"dy-video-rating\">7.3</span>\n" +
+                        "                                    <ul class=\"dy-video-meta-list\">\n" +
+                        "                                        <li class=\"dy-video-actors\"> <span class=\"dy-video-tip\"> 年龄: </span> <a>" + list[i].age + "</a>  </li>\n" +
+                        "                                        <li class=\"dy-video-types\"> <span class=\"dy-video-tip\">性别:</span> <span class=\"dy-video-meta-filter\">" + list[i].sex + "</span> </li>\n" +
+                        "                                        <li class=\"dy-video-areas\"> <span class=\"dy-split\">|</span> <span class=\"dy-video-tip\">电话:</span> <span class=\"dy-video-meta-filter\">" + list[i].phone + "</span> </li>\n" +
+                        "                                        <li class=\"dy-video-starts\"> <span class=\"dy-split\">|</span> <span class=\"dy-video-tip\">年代:</span> <span class=\"dy-video-meta-filter\">2018</span> </li>\n" +
+                        "                                    </ul>\n" +
+                        "                                    <p class=\"dy-video-intro\"> 从事健身行业十余年，好教练</p>\n" +
+                        "                                </div>\n" +
+                        "                                <div class=\"dy-video-meta-bg\"> </div>\n" +
+                        "                            </div>\n" +
+                        "                            <div class=\"dy-video-poster\"> <a class=\"dy-video-link\"> <img class=\"dy-video-img\" src=\"" + list[i].code + "\" alt=\"" + list[i].name + "\"> <span class=\"dy-video-nocomplete\"></span> <span class=\"dy-video-date\"> 2018 年 </span> <span class=\"dy-video-bg\"></span> <span class=\"s-pay\"></span> </a> </div>\n" +
+                        "                            <div class=\"dy-video-primary\">\n" +
+                        "                                <h4 class=\"dy-video-title\"><a> " + list[i].name + " </a> </h4>\n" +
+                        "                                <span class=\"dy-video-rating\"> 7.3 </span> </div>\n" +
+                        "                        </li>");
+                }
+            } else {
+                layer.msg(data.message, {icon: 5});
+            }
+        },
+        error: function (data) {
+            layer.msg(data.status, {icon: 5});
+        }
+    });
 }

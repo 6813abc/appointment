@@ -56,11 +56,12 @@ public interface UserService {
 
     /**
      * 功能描述:
-     * @date 2020/1/6
+     *
      * @param token token
      * @param phone phone
      * @param money 充值金额
-     * @return ]
+     * @return com.cyg.appointment.exception.BaseResult
+     * @date 2020/1/6
      */
     BaseResult rechargeBalance(String token, String phone, Long money);
 }

@@ -62,6 +62,11 @@ $(document).ready(function () {
         $('#equip-type-add-submit').click(function () {
             equipTypeAddSubmit(layer, select_text);
         });
+        //====================================场地管理================================================
+        //器材种类查询
+        $('#admin-field-main').click(function () {
+            fieldClick();
+        });
         //====================================公共部分================================================
         //初始化页面
         init(layer, element, table);
@@ -410,6 +415,65 @@ function equipTypeAddSubmit(layer, select_text) {
     //清空输入框
     $('#equip-type-label-value').val("");
 }
+//=====================================场地管理===============================================
+//初始化设备场地页面
+function initField(element, table) {
+    $.cookie('flag', 'field');
+    if ($("#flag_a").length === 0) {
+        var $a1 = $('<a href="" id="flag_a">场地管理</a>');
+        var $a2 = $('<a href="">场地分析</a>');
+        $('#coach-nav').append($a1).append($a2);
+        element.init();
+    }
+    $('#admin-field').addClass('layui-nav-itemed');
+    //刷新数据
+    table.render({
+        elem: '#main-div-table',
+        height: 430,
+        url: $.cookie('url') + '/selectAllField',
+        page: true,
+        toolbar: '#toolbar-equip-type',
+        title: "场地数据",
+        limit: 10,
+        id: 'id-field-type',
+        where: {
+            token: $.cookie('token')
+        },
+        response:
+            {
+                statusCode: 200
+            }
+        ,
+        parseData: function (res) { //res 即为原始返回的数据
+            return {
+                "code": res.code, //解析接口状态
+                "msg": res.message, //解析提示文本
+                "count": res.data.length, //解析数据长度
+                "data": res.data.data //解析数据列表
+            };
+        }
+        ,
+        cols: [[ //表头
+            {field: 'code', title: '图片', width: '10%', templet: '#showImg'}
+            , {field: 'id', title: 'ID', width: '10%', align: 'center', sort: true}
+            , {field: 'roomNumber', title: '房间号', width: '10%', align: 'center'}
+            , {field: 'address', title: '地址', width: '30%', align: 'center'}
+            , {field: 'capacity', title: '容量', width: '10%', align: 'center', sort: true}
+            , {fixed: 'right', title: '操作', width: '30%', align: 'center', toolbar: '#bar-equip-type'}
+        ]],
+        done: function (res, curr, count) {
+            hoverOpenEquipType();
+        }
+    });
+}
+//场地类型查询点击事件
+function fieldClick() {
+    //页面跳转
+    window.location.href = "field.html";
+    //页面标识
+    $.cookie('flag', 'field');
+}
+
 
 //=====================================公共部分===============================================
 //初始化页面
@@ -425,6 +489,8 @@ function init(layer, element, table) {
         initCustomer(element, table);
     } else if ($.cookie('flag') === 'equipType') {
         initEquipType(element, table);
+    } else if ($.cookie('flag') === 'field') {
+        initField(element, table);
     }
     //设置头像
     $("#main-self-img").attr("src", localStorage.getItem("code"));
@@ -443,6 +509,9 @@ function fold(table) {
     } else if ($.cookie('flag') === 'equipType') {
         //重置器材种类表格
         table.reload('id-equip-type');
+    }else if ($.cookie('flag') === 'field') {
+        //重置器材种类表格
+        table.reload('id-field-type');
     }
     if ($("body").hasClass("mini-sidebar")) {
         $("body").removeClass("mini-sidebar");

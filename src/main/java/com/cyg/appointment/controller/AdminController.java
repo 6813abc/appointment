@@ -33,6 +33,12 @@ public class AdminController {
         return adminService.selectAllCoach(token, page, limit);
     }
 
+    @RequestMapping("selectAllCoach2")
+    public BaseResult selectAllCoach2(String token) {
+        return adminService.selectAllCoach2(token);
+    }
+
+
     @RequestMapping("selectByPhone")
     public BaseResult selectByPhone(String token, String phone) {
         return adminService.selectByPhone(token, phone);

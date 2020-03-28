@@ -34,6 +34,15 @@ public interface AdminService {
      */
     BaseResult selectAllCoach(String token, Long page, Integer limit);
 
+    /**
+     * 功能描述:
+     *
+     * @param token token
+     * @return com.cyg.appointment.exception.BaseResult
+     * @date 2019/12/31
+     */
+    BaseResult selectAllCoach2(String token);
+
 
     /**
      * 功能描述:根据phone查询
