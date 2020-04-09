@@ -22,4 +22,5 @@ public class EquipTypeSelectVo {
     private Long unitPrice;
     private String pictureCode;
     private String createTime;
+    private Long count = 0L;
 }

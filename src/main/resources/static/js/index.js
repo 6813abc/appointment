@@ -1,20 +1,33 @@
 $(document).ready(function () {
-    //$.cookie('url', 'http://127.0.0.1:8095');
-    $.cookie('url', '');
-    layui.use(['element', 'carousel', 'layer', 'form', 'upload', 'table'], function () {
+    $.cookie('url', 'http://127.0.0.1:8095');
+    //$.cookie('url', '');
+    layui.use(['element', 'carousel', 'layer', 'form', 'upload', 'table', 'laydate'], function () {
         var element = layui.element;
         var carousel = layui.carousel;
         var layer = layui.layer;
         var form = layui.form;
         var upload = layui.upload;
         var table = layui.table;
+        var laydate = layui.laydate;
         //首页轮播图
         carousel.render({
             elem: '#layui-carousel',
             width: '100%',
             height: '580px',
         });
-
+        laydate.render({
+            elem: '#choice-day-input'
+        });
+        laydate.render({
+            elem: '#choice-hour-start',
+            type: 'time',
+            format: "HH-mm"
+        });
+        laydate.render({
+            elem: '#choice-hour-end',
+            type: 'time',
+            format: "HH-mm"
+        });
         //初始化页面
         init();
         //没有登录则显示注册、登录按钮,隐藏个人中心
@@ -200,6 +213,8 @@ function init() {
             $('#index-to-appointment').addClass('layui-this');
             //加载教练信息、器材信息、场地信息,用来供用户选择
             initCoach();
+            initField();
+            initEquip();
         } else {
             $('#index-to-member').addClass('layui-this');
         }
@@ -567,7 +582,7 @@ function initCoach() {
             if (data.code === '200') {
                 var list = data.data;
                 for (var i = 0; i < list.length; i++) {
-                    $('.dy-video-list').append("  <li data- class=\"dy-video-item dy-video-meta-right\">\n" +
+                    $('.dy-coach-list').append("  <li data- class=\"dy-video-item dy-video-meta-right\"  onclick='initCoachClick(\"" + list[i].id + "\" ,\"" + list[i].name + "\")'>\n" +
                         "                            <div class=\"dy-video-meta\">\n" +
                         "                                <div class=\"dy-video-meta-bg\"> </div>\n" +
                         "                                <div class=\"dy-video-meta-dy\">\n" +
@@ -587,6 +602,58 @@ function initCoach() {
                         "                            <div class=\"dy-video-primary\">\n" +
                         "                                <h4 class=\"dy-video-title\"><a> " + list[i].name + " </a> </h4>\n" +
                         "                                <span class=\"dy-video-rating\"> 7.3 </span> </div>\n" +
+                        "                        </li>"
+                    )
+                    ;
+                }
+            } else {
+                layer.msg(data.message, {icon: 5});
+            }
+        },
+        error: function (data) {
+            layer.msg(data.status, {icon: 5});
+        }
+    });
+}
+
+//初始化场地状态
+function initField() {
+    var url = $.cookie('url') + "/selectAllField";
+    $.ajax({
+        url: url,
+        data: {
+            token: $.cookie('userToken'),
+            phone: localStorage.getItem('userPhone'),
+            page: 1,
+            limit: 100
+        },
+        async: false,
+        success: function (data) {
+            //定义每行的长度
+            var len = 5;
+            if (data.code === '200') {
+                var list = data.data.data;
+                for (var i = 0; i < list.length; i++) {
+                    $('.dy-field-list').append("  <li data- class=\"dy-video-item dy-video-meta-right\" onclick='initFieldClick(\"" + list[i].id + "\" ,\"" + list[i].address + "\")'>\n" +
+                        "                            <div class=\"dy-video-meta\">\n" +
+                        "                                <div class=\"dy-video-meta-bg\"> </div>\n" +
+                        "                                <div class=\"dy-video-meta-dy\">\n" +
+                        "                                    <h4 class=\"dy-video-title\"> <a>" + list[i].address + "</a> </h4>\n" +
+                        "                                    <span class=\"dy-video-rating\">7.3</span>\n" +
+                        "                                    <ul class=\"dy-video-meta-list\">\n" +
+                        "                                        <li class=\"dy-video-actors\"> <span class=\"dy-video-tip\"> 编号: </span> <a>" + list[i].roomNumber + "</a>  </li>\n" +
+                        "                                        <li class=\"dy-video-actors\"> <span class=\"dy-video-tip\"> 地址: </span> <a>" + list[i].address + "</a>  </li>\n" +
+                        "                                        <li class=\"dy-video-types\"> <span class=\"dy-video-tip\">容量:</span> <span class=\"dy-video-meta-filter\">" + list[i].capacity + "</span> </li>\n" +
+                        "                                        <li class=\"dy-video-starts\"> <span class=\"dy-split\">|</span> <span class=\"dy-video-tip\">年代:</span> <span class=\"dy-video-meta-filter\">2018</span> </li>\n" +
+                        "                                    </ul>\n" +
+                        "                                    <p class=\"dy-video-intro\">xxx</p>\n" +
+                        "                                </div>\n" +
+                        "                                <div class=\"dy-video-meta-bg\"> </div>\n" +
+                        "                            </div>\n" +
+                        "                            <div class=\"dy-video-poster\"> <a class=\"dy-video-link\"> <img class=\"dy-video-img\" src=\"" + list[i].code + "\" alt=\"" + list[i].address + "\"> <span class=\"dy-video-nocomplete\"></span> <span class=\"dy-video-date\"> 2018 年 </span> <span class=\"dy-video-bg\"></span> <span class=\"s-pay\"></span> </a> </div>\n" +
+                        "                            <div class=\"dy-video-primary\">\n" +
+                        "                                <h4 class=\"dy-video-title\"><a> " + list[i].address + " </a> </h4>\n" +
+                        "                                <span class=\"dy-video-rating\"> 7.3 </span> </div>\n" +
                         "                        </li>");
                 }
             } else {
@@ -597,4 +664,114 @@ function initCoach() {
             layer.msg(data.status, {icon: 5});
         }
     });
+}
+
+//初始化场地状态
+function initEquip() {
+    var url = $.cookie('url') + "/selectAllEquipType";
+    $.ajax({
+        url: url,
+        data: {
+            token: $.cookie('userToken'),
+            phone: localStorage.getItem('userPhone'),
+            page: 1,
+            limit: 100
+        },
+        async: false,
+        success: function (data) {
+            //定义每行的长度
+            var len = 5;
+            if (data.code === '200') {
+                var list = data.data.data;
+                for (var i = 0; i < list.length; i++) {
+                    $('.dy-equip-list').append("  <li data- class=\"dy-video-item dy-video-meta-right\" onclick='initEquipClick(\"" + list[i].id + "\" ,\"" + list[i].name + "\")' >\n" +
+                        "                            <div class=\"dy-video-meta\">\n" +
+                        "                                <div class=\"dy-video-meta-bg\"> </div>\n" +
+                        "                                <div class=\"dy-video-meta-dy\">\n" +
+                        "                                    <h4 class=\"dy-video-title\"> <a>" + list[i].name + "</a> </h4>\n" +
+                        "                                    <span class=\"dy-video-rating\">7.3</span>\n" +
+                        "                                    <ul class=\"dy-video-meta-list\">\n" +
+                        "                                        <li class=\"dy-video-actors\"> <span class=\"dy-video-tip\"> 名称: </span> <a>" + list[i].name + "</a>  </li>\n" +
+                        "                                        <li class=\"dy-video-actors\"> <span class=\"dy-video-tip\"> 创建时间: </span> <a>" + list[i].createTime + "</a>  </li>\n" +
+                        "                                        <li class=\"dy-video-types\"> <span class=\"dy-video-tip\">数量:</span> <span class=\"dy-video-meta-filter\">" + list[i].count + "</span> </li>\n" +
+                        "                                        <li class=\"dy-video-starts\"> <span class=\"dy-split\">|</span> <span class=\"dy-video-tip\">年代:</span> <span class=\"dy-video-meta-filter\">2018</span> </li>\n" +
+                        "                                    </ul>\n" +
+                        "                                    <p class=\"dy-video-intro\">xxx</p>\n" +
+                        "                                </div>\n" +
+                        "                                <div class=\"dy-video-meta-bg\"> </div>\n" +
+                        "                            </div>\n" +
+                        "                            <div class=\"dy-video-poster\"> <a class=\"dy-video-link\"> <img class=\"dy-video-img\" src=\"" + list[i].pictureCode + "\" alt=\"" + list[i].address + "\"> <span class=\"dy-video-nocomplete\"></span> <span class=\"dy-video-date\"> 2018 年 </span> <span class=\"dy-video-bg\"></span> <span class=\"s-pay\"></span> </a> </div>\n" +
+                        "                            <div class=\"dy-video-primary\">\n" +
+                        "                                <h4 class=\"dy-video-title\"><a> " + list[i].name + " </a> </h4>\n" +
+                        "                                <span class=\"dy-video-rating\"> 7.3 </span> </div>\n" +
+                        "                        </li>");
+                }
+            } else {
+                layer.msg(data.message, {icon: 5});
+            }
+        },
+        error: function (data) {
+            layer.msg(data.status, {icon: 5});
+        }
+    });
+}
+
+function initCoachClick(id, name) {
+    var coachId = $.cookie('coachId');
+    var coachName = $.cookie('coachName');
+    if (coachName === undefined || coachName == null || coachName.length === 0) {
+        coachId = id;
+        coachName = name;
+    } else {
+        if (coachName === name) {
+            coachId = "";
+            coachName = "";
+        } else {
+            coachId = id;
+            coachName = name;
+        }
+    }
+    $.cookie('coachId', coachId);
+    $.cookie('coachName', coachName);
+    $("#choice-coach-span").text("你选择的教练为：" + coachName);
+}
+
+function initFieldClick(id, address) {
+    var fieldId = $.cookie('fieldId');
+    var fieldAddress = $.cookie('fieldAddress');
+    if (fieldAddress === undefined || fieldAddress == null || fieldAddress.length === 0) {
+        fieldId = id;
+        fieldAddress = address;
+    } else {
+        if (address === fieldAddress) {
+            fieldId = "";
+            fieldAddress = "";
+        } else {
+            fieldId = id;
+            fieldAddress = address;
+        }
+    }
+    $.cookie('fieldId', fieldId);
+    $.cookie('fieldAddress', fieldAddress);
+    $("#choice-field-span").text("你选择的场地地址为：" + fieldAddress);
+}
+
+function initEquipClick(id, name) {
+    var equipName = $.cookie('equipName');
+    var equipId = $.cookie('equipId');
+    if (equipName === undefined || equipName == null || equipName.length === 0) {
+        equipName = name;
+        equipId = id;
+    } else {
+        if (equipName.indexOf("name") === -1) {
+            equipName = equipName + "," + name
+            equipId = equipId + "," + id
+        } else {
+            equipName.replace("," + name, "");
+            equipId.replace("," + id, "");
+        }
+    }
+    $.cookie('equipId', equipId);
+    $.cookie('equipName', equipName);
+    $("#choice-equip-span").text("你选择的器材为：" + equipName);
 }

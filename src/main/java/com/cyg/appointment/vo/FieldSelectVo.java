@@ -9,7 +9,7 @@ import lombok.ToString;
  **/
 @Data
 @ToString
-public class FiledSelectVo {
+public class FieldSelectVo {
 
     private Long id;
     private String roomNumber;

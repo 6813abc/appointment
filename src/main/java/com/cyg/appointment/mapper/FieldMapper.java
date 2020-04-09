@@ -1,7 +1,7 @@
 package com.cyg.appointment.mapper;
 
 import com.cyg.appointment.entity.Field;
-import com.cyg.appointment.vo.FiledSelectVo;
+import com.cyg.appointment.vo.FieldSelectVo;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -14,7 +14,7 @@ import java.util.List;
  * @Version:
  **/
 @Repository
-public interface FiledMapper {
+public interface FieldMapper {
 
     /**
      * 功能描述:新增场地
@@ -50,7 +50,7 @@ public interface FiledMapper {
             @Result(column = "room_number", property = "roomNumber"),
             @Result(column = "base64", property = "code"),
     })
-    List<FiledSelectVo> selectAllFiled(Long index, Integer limit);
+    List<FieldSelectVo> selectAllFiled(Long index, Integer limit);
 
     /**
      * 功能描述:查询数据量

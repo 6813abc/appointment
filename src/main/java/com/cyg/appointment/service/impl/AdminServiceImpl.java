@@ -4,21 +4,17 @@ import com.cyg.appointment.config.JwtToken;
 import com.cyg.appointment.dto.AdminDto;
 import com.cyg.appointment.entity.Admin;
 import com.cyg.appointment.entity.File;
-import com.cyg.appointment.entity.User;
 import com.cyg.appointment.exception.BaseResult;
 import com.cyg.appointment.exception.ResultEnum;
 import com.cyg.appointment.exception.ResultUtil;
 import com.cyg.appointment.mapper.AdminMapper;
+import com.cyg.appointment.mapper.FieldMapper;
 import com.cyg.appointment.mapper.FileMapper;
-import com.cyg.appointment.mapper.UserMapper;
 import com.cyg.appointment.service.AdminService;
 import com.cyg.appointment.util.JedisUtil;
 import com.cyg.appointment.util.ValidateCodeUtil;
 import com.cyg.appointment.vo.AdminSelect;
-import com.sun.org.apache.bcel.internal.generic.NEW;
-import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,6 +43,8 @@ public class AdminServiceImpl implements AdminService {
     private JedisUtil jedisUtil;
     @Autowired
     private FileMapper fileMapper;
+    @Autowired
+    private FieldMapper fieldMapper;
 
     @Override
     public BaseResult loginAdmin(HttpServletRequest request, String phone, String password, String role) {
@@ -103,6 +101,7 @@ public class AdminServiceImpl implements AdminService {
         }
         return ResultUtil.success(adminDtos);
     }
+
 
     @Override
     public BaseResult selectByPhone(String token, String phone) {

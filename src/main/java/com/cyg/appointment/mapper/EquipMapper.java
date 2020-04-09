@@ -1,5 +1,6 @@
 package com.cyg.appointment.mapper;
 
+import com.cyg.appointment.entity.Equip;
 import com.cyg.appointment.entity.EquipType;
 import com.cyg.appointment.entity.Recharge;
 import com.cyg.appointment.vo.EquipTypeSelectVo;
@@ -81,4 +82,23 @@ public interface EquipMapper {
      */
     @Select("select count(*) from equip")
     Integer selectEquipLength();
+
+    @Select("select * from equip")
+    @Results({
+            @Result(column = "equip_type_id", property = "equipTypeId"),
+            @Result(column = "create_date", property = "createDate"),
+            @Result(column = "order_id", property = "orderId"),
+    })
+    List<Equip> selectAllEquip();
+
+    /**
+     *功能描述:
+     * @param equipTypeId 类型id
+
+     * @author cyg
+     * @return java.lang.Long
+     * @date 2020/4/8
+     */
+    @Select("select sum(count) from equip where equip_type_id = #{equipTypeId}")
+    Long selectEquipTypeLengthByEquipTypeId(Long equipTypeId);
 }

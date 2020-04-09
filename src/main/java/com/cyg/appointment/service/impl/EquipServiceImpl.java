@@ -2,6 +2,7 @@ package com.cyg.appointment.service.impl;
 
 import com.cyg.appointment.dto.EquipTypeAddDto;
 import com.cyg.appointment.dto.EquipTypeUpdateDto;
+import com.cyg.appointment.entity.Equip;
 import com.cyg.appointment.entity.EquipType;
 import com.cyg.appointment.entity.EquipTypeSpecific;
 import com.cyg.appointment.entity.File;
@@ -67,6 +68,10 @@ public class EquipServiceImpl implements EquipService {
     public BaseResult selectAllEquipType(String token, Long page, Integer limit) {
         Long index = (page - 1) * limit;
         List<EquipTypeSelectVo> equipTypeSelectVos = equipMapper.selectAllEquipType(index, limit);
+        for (EquipTypeSelectVo equipTypeSelectVo : equipTypeSelectVos){
+            Long count = equipMapper.selectEquipTypeLengthByEquipTypeId(equipTypeSelectVo.getId());
+            equipTypeSelectVo.setCount(count);
+        }
         Map<String, Object> map = new HashMap<>(4);
         map.put("length", equipMapper.selectEquipTypeLength());
         map.put("data", equipTypeSelectVos);
