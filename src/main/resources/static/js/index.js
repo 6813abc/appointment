@@ -15,19 +15,6 @@ $(document).ready(function () {
             width: '100%',
             height: '580px',
         });
-        laydate.render({
-            elem: '#choice-day-input'
-        });
-        laydate.render({
-            elem: '#choice-hour-start',
-            type: 'time',
-            format: "HH-mm"
-        });
-        laydate.render({
-            elem: '#choice-hour-end',
-            type: 'time',
-            format: "HH-mm"
-        });
         //初始化页面
         init();
         //没有登录则显示注册、登录按钮,隐藏个人中心
@@ -41,12 +28,9 @@ $(document).ready(function () {
         $("#index-register").click(function () {
             indexOpenRegister = openRegister(layer);
         });
-
         //登录点击
         var indexOpenLogin;
         $("#index-login").click(function () {
-            //加载验证码
-            loadCode(layer);
             indexOpenLogin = openLogin(layer);
         });
 
@@ -55,6 +39,8 @@ $(document).ready(function () {
             //删除cookie
             $.removeCookie('userToken');
             $.removeCookie('flagUser');
+            $.removeCookie('date-day-last');
+            $.removeCookie('date-day-next');
             localStorage.removeItem('userImg');
             show();
         });
@@ -189,6 +175,18 @@ $(document).ready(function () {
             $(".layui-breadcrumb > a").removeClass("index-record");
             $(this).addClass("index-record");
         });
+        //上一周
+        $("#last-week").click(function () {
+            lastWeek();
+        });
+        //下一周
+        $("#next-week").click(function () {
+            nextWeek();
+        });
+        //选择时间
+        $(".choice-date").click(function () {
+            choiceDate(this);
+        });
     });
 });
 
@@ -212,9 +210,13 @@ function init() {
             //初始化步骤
             $('#index-to-appointment').addClass('layui-this');
             //加载教练信息、器材信息、场地信息,用来供用户选择
-            initCoach();
-            initField();
-            initEquip();
+            //initCoach();
+            //initField();
+            //initEquip();
+            $.removeCookie('date-day-next');
+            $.removeCookie('choice-day-time');
+            $.cookie('date-day-next', "1");
+            initTime(1);
         } else {
             $('#index-to-member').addClass('layui-this');
         }
@@ -246,6 +248,8 @@ function openLogin(layer) {
         anim: 1,
         maxmin: true
     });
+    //加载验证码
+    loadCode(layer);
     return indexOpenLogin;
 }
 
@@ -666,7 +670,7 @@ function initField() {
     });
 }
 
-//初始化场地状态
+//初始化器材状态
 function initEquip() {
     var url = $.cookie('url') + "/selectAllEquipType";
     $.ajax({
@@ -714,6 +718,53 @@ function initEquip() {
             layer.msg(data.status, {icon: 5});
         }
     });
+}
+
+//初始化时间状态
+function initTime(firstDay) {
+    $(".choice-date").removeClass("day-selection");
+    let date;
+    for (let i = Number(firstDay); i < Number(firstDay) + 7; i++) {
+        let idNum = Number(i) % 7 === 0 ? 7 : Number(i) % 7;
+        let id = "time-" + idNum;
+        date = addDay(Number(i) - 1);
+        let value = formatDate(date);
+        $("#" + id).html(value);
+    }
+    $("#time-f").html(date.getFullYear() + "年");
+    let choiceTime = $.cookie("choice-day-time");
+    if (choiceTime != null) {
+        let choiceTimeArrys = choiceTime.split("@@");
+        $.each(choiceTimeArrys, function (i, val) {
+            let values = choiceTime.split("$$");
+            let year = '';
+            let dateDayNext = '';
+            let trSeq = '';
+            let tdSeq = '';
+            console.log("values:" + values);
+            $.each(values, function (j, val1) {
+                if (j === 2) {
+                    year = val1;
+                }
+                if (j === 3) {
+                    dateDayNext = val1;
+                }
+                if (j === 4) {
+                    trSeq = val1;
+                }
+                if (j === 5) {
+                    tdSeq = val1;
+                }
+            });
+            console.log("year:" + year);
+            console.log("year:" + $("#time-f").html());
+            console.log("dateDayNext:" + dateDayNext);
+            console.log("dateDayNext:" + $.cookie('date-day-next'));
+            if (year === $("#time-f").html() && dateDayNext === $.cookie('date-day-next')) {
+                $("#time-day tbody tr:eq(" + trSeq + ") td:eq(" + tdSeq + ")").addClass("day-selection");
+            }
+        });
+    }
 }
 
 function initCoachClick(id, name) {
@@ -774,4 +825,54 @@ function initEquipClick(id, name) {
     $.cookie('equipId', equipId);
     $.cookie('equipName', equipName);
     $("#choice-equip-span").text("你选择的器材为：" + equipName);
+}
+
+function addDay(dayNumber, date) {
+    date = date ? date : new Date();
+    let ms = dayNumber * (1000 * 60 * 60 * 24)
+    return new Date(date.getTime() + ms);
+}
+
+function formatDate(date) {
+    let month = (date.getMonth() + 1);
+    let day = date.getDate();
+    let week = '(' + ['周天', '周一', '周二', '周三', '周四', '周五', '周六'][date.getDay()] + ')';
+    return month + "/" + day + ' ' + week;
+}
+
+function lastWeek() {
+    if ($.cookie('date-day-next') != null && Number($.cookie('date-day-next')) > 1) {
+        $.cookie('date-day-next', Number($.cookie('date-day-next')) - 7);
+        initTime($.cookie('date-day-next'));
+    } else {
+        layer.msg("不能选择过去的时间");
+    }
+}
+
+function nextWeek() {
+    $.cookie('date-day-next', Number($.cookie('date-day-next')) + 7);
+    initTime($.cookie('date-day-next'));
+}
+
+function choiceDate(th) {
+    let day;
+    let time;
+    let tdSeq = $(th).parent().find("td").index($(th)[0]) + 1;
+    let trSeq = $(th).parent().parent().find("tr").index($(th).parent()[0]) + 1;
+    //console.log("第" + (trSeq + 1) + "行，第" + (tdSeq + 1) + "列");
+    if ((trSeq) === 1) {
+        time = $(th).parent().find("td").eq(1).html();
+        day = $(th).parent().parent().parent().find("thead").eq(0).find("tr").eq(0).find("th").eq(tdSeq).html();
+    } else {
+        time = $(th).parent().find("td").eq(0).html();
+        day = $(th).parent().parent().parent().find("thead").eq(0).find("tr").eq(0).find("th").eq(tdSeq + 1).html();
+    }
+    $(th).addClass("day-selection");
+    $(th).html("选中");
+    let value = day + "$$" + time + "$$" + $("#time-f").html() + "$$" + $.cookie('date-day-next') + "$$" + trSeq + "$$" + tdSeq;
+    if ($.cookie("choice-day-time") === undefined || $.cookie("choice-day-time") == null) {
+        $.cookie("choice-day-time", value);
+    } else {
+        $.cookie("choice-day-time", $.cookie("choice-day-time") + "@@" + value);
+    }
 }

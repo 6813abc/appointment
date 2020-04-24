@@ -292,8 +292,20 @@ html {
     background: yellow;
 }
 
-#choice-coach-div{
+#choice-coach-div {
     text-align: center;
+}
+
+.choice-date {
+    font-size: 20px;
+}
+
+.choice-date:hover {
+    color: red;
+}
+
+.day-selection {
+    background: #9F9F9F;
 }
 
 /*admin*/
