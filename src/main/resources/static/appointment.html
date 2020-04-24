@@ -82,10 +82,7 @@
                                     <span id="choice-time-span">你还未选择时间，请选择</span>
                                 </div>
                                 <div class="layui-inline">
-                                    <!-- <input type="text" class="layui-input" id="choice-day-input">
-                                     <input type="text" class="layui-input" id="choice-hour-start">
-                                     <input type="text" class="layui-input" id="choice-hour-end">-->
-                                    <table id="time-day"  class="layui-table" lay-size="lg">
+                                    <table id="time-day" class="layui-table" lay-size="lg">
                                         <colgroup>
                                             <col width="150">
                                             <col width="150">
@@ -184,26 +181,43 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="main">
-                                    <div class="dy-content">
-                                        <div class="dy-videos">
-                                            <ul class="dy-time-list">
-                                            </ul>
-                                        </div>
-                                    </div>
+                            </div>
+                            <div class="content">
+                                <div class="layui-inline">
+                                    <table id="table-appointment" class="layui-table" lay-size="lg" lay-even
+                                           lay-skin="row">
+                                        <colgroup>
+                                            <col width="20">
+                                            <col width="180">
+                                        </colgroup>
+                                        <thead>
+                                        <tr>
+                                            <th colspan="2" style="text-align: center">预约信息预览</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>教练</td>
+                                            <td id="appointment-coach">未选择</td>
+                                        </tr>
+                                        <tr>
+                                            <td>场地</td>
+                                            <td id="appointment-field">未选择</td>
+                                        </tr>
+                                        <tr>
+                                            <td>器材</td>
+                                            <td id="appointment-equip">未选择</td>
+                                        </tr>
+                                        <tr>
+                                            <td>时间</td>
+                                            <td id="appointment-time">未选择</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-
-                                <div class="main">
-                                    <div class="dy-content">
-                                        <div class="dy-videos">
-                                            <ul class="dy-sure-list">
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
+                                <button id="appointment-sure" type="button" class="layui-btn">预约</button>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>

@@ -60,9 +60,6 @@ $(document).ready(function () {
         //确认注册
         var code;
         form.on('submit(layui-btn-submit-register)', function (data) {
-            console.log(data.elem);
-            console.log(data.form);
-            console.log(data.field);
             sureRegister(layer, data, code, indexOpenRegister);
             return false;
         });
@@ -138,7 +135,7 @@ $(document).ready(function () {
             sureRecharge(layer, indexOpenRecharge);
         });
         //充值记录点击事件
-        var indexRechargeRecord;
+        let indexRechargeRecord;
         $('#index-recharge-record').click(function () {
             $("#recharge-record").addClass("index-record");
             //加载充值记录数据
@@ -146,7 +143,7 @@ $(document).ready(function () {
             indexRechargeRecord = openRecord(layer);
         });
         //消费记录点击事件
-        var indexConsumptionRecord;
+        let indexConsumptionRecord;
         $('#index-consumption-record').click(function () {
             $("#consumption-record").addClass("index-record");
             //加载消费记录数据
@@ -154,7 +151,7 @@ $(document).ready(function () {
             indexConsumptionRecord = openRecord(layer);
         });
         //预约记录点击事件
-        var indexAppointmentRecord;
+        let indexAppointmentRecord;
         $('#index-appointment-record').click(function () {
             $("#appointment-record").addClass("index-record");
             indexAppointmentRecord = openRecord(layer);
@@ -187,6 +184,10 @@ $(document).ready(function () {
         $(".choice-date").click(function () {
             choiceDate(this);
         });
+        //确认预约点击
+        $("#appointment-sure").click(function () {
+            appointmentSure();
+        });
     });
 });
 
@@ -207,12 +208,18 @@ function init() {
         } else if ($.cookie('flagUser') === 'index') {
             $('#index-index').addClass('layui-this');
         } else if ($.cookie('flagUser') === 'appointment') {
+            $.removeCookie('coachId');
+            $.removeCookie('equipId');
+            $.removeCookie('fieldId');
+            $.removeCookie('coachName');
+            $.removeCookie('equipName');
+            $.removeCookie('fieldAddress');
             //初始化步骤
             $('#index-to-appointment').addClass('layui-this');
             //加载教练信息、器材信息、场地信息,用来供用户选择
-            //initCoach();
-            //initField();
-            //initEquip();
+            initCoach();
+            initField();
+            initEquip();
             $.removeCookie('date-day-next');
             $.removeCookie('choice-day-time');
             $.removeCookie('choice-day-time-show');
@@ -754,6 +761,7 @@ function initTime(firstDay) {
     }
 }
 
+//选择教练点击
 function initCoachClick(id, name) {
     var coachId = $.cookie('coachId');
     var coachName = $.cookie('coachName');
@@ -772,8 +780,10 @@ function initCoachClick(id, name) {
     $.cookie('coachId', coachId);
     $.cookie('coachName', coachName);
     $("#choice-coach-span").text("你选择的教练为：" + coachName);
+    $("#appointment-coach").html(coachName);
 }
 
+//选择场地点击
 function initFieldClick(id, address) {
     var fieldId = $.cookie('fieldId');
     var fieldAddress = $.cookie('fieldAddress');
@@ -792,8 +802,10 @@ function initFieldClick(id, address) {
     $.cookie('fieldId', fieldId);
     $.cookie('fieldAddress', fieldAddress);
     $("#choice-field-span").text("你选择的场地地址为：" + fieldAddress);
+    $("#appointment-field").html(fieldAddress);
 }
 
+//选择器材点击
 function initEquipClick(id, name) {
     var equipName = $.cookie('equipName');
     var equipId = $.cookie('equipId');
@@ -801,7 +813,7 @@ function initEquipClick(id, name) {
         equipName = name;
         equipId = id;
     } else {
-        if (equipName.indexOf("name") === -1) {
+        if (equipName.indexOf(name) === -1) {
             equipName = equipName + "," + name
             equipId = equipId + "," + id
         } else {
@@ -812,35 +824,10 @@ function initEquipClick(id, name) {
     $.cookie('equipId', equipId);
     $.cookie('equipName', equipName);
     $("#choice-equip-span").text("你选择的器材为：" + equipName);
+    $("#appointment-equip").html(equipName);
 }
 
-function addDay(dayNumber, date) {
-    date = date ? date : new Date();
-    let ms = dayNumber * (1000 * 60 * 60 * 24)
-    return new Date(date.getTime() + ms);
-}
-
-function formatDate(date) {
-    let month = (date.getMonth() + 1);
-    let day = date.getDate();
-    let week = '(' + ['周天', '周一', '周二', '周三', '周四', '周五', '周六'][date.getDay()] + ')';
-    return month + "/" + day + ' ' + week;
-}
-
-function lastWeek() {
-    if ($.cookie('date-day-next') != null && Number($.cookie('date-day-next')) > 1) {
-        $.cookie('date-day-next', Number($.cookie('date-day-next')) - 7);
-        initTime($.cookie('date-day-next'));
-    } else {
-        layer.msg("不能选择过去的时间");
-    }
-}
-
-function nextWeek() {
-    $.cookie('date-day-next', Number($.cookie('date-day-next')) + 7);
-    initTime($.cookie('date-day-next'));
-}
-
+//选择时间点击
 function choiceDate(th) {
     let day;
     let time;
@@ -882,5 +869,73 @@ function choiceDate(th) {
             $.cookie("choice-day-time-show", $.cookie("choice-day-time-show").replace(value1, ""));
         }
     }
-    $("#choice-time-span").text("你选择的时间为:" + $.cookie("choice-day-time-show"));
+    if ($.cookie("choice-day-time-show").substring(0, 1) === '、') {
+        $.cookie("choice-day-time-show", $.cookie("choice-day-time-show").substring(1,
+            $.cookie("choice-day-time-show").length));
+    }
+    if ($.cookie("choice-day-time-show") === undefined || $.cookie("choice-day-time-show") == null
+        || $.cookie("choice-day-time-show") === "") {
+        $("#choice-time-span").text("你还未选择时间，请选择");
+    } else {
+        $("#choice-time-span").text("你选择的时间为:" + $.cookie("choice-day-time-show"));
+    }
+    $("#appointment-time").html($.cookie("choice-day-time-show"));
+}
+
+//在date时间添加dayNumber天
+function addDay(dayNumber, date) {
+    date = date ? date : new Date();
+    let ms = dayNumber * (1000 * 60 * 60 * 24)
+    return new Date(date.getTime() + ms);
+}
+
+//构造时间
+function formatDate(date) {
+    let month = (date.getMonth() + 1);
+    let day = date.getDate();
+    let week = '(' + ['周天', '周一', '周二', '周三', '周四', '周五', '周六'][date.getDay()] + ')';
+    return month + "/" + day + week;
+}
+
+//时间上一页点击
+function lastWeek() {
+    if ($.cookie('date-day-next') != null && Number($.cookie('date-day-next')) > 1) {
+        $.cookie('date-day-next', Number($.cookie('date-day-next')) - 7);
+        initTime($.cookie('date-day-next'));
+    } else {
+        layer.msg("不能选择过去的时间");
+    }
+}
+
+//时间下一页点击
+function nextWeek() {
+    $.cookie('date-day-next', Number($.cookie('date-day-next')) + 7);
+    initTime($.cookie('date-day-next'));
+}
+
+function appointmentSure() {
+    let coachId = $.cookie('coachId');
+    let fieldId = $.cookie('fieldId');
+    let equipId = $.cookie('equipId');
+    let time = $.cookie("choice-day-time-show")
+    if (coachId === undefined || coachId == null || coachId === "") {
+        layer.msg("教练未选择");
+        return;
+    }
+    if (fieldId === undefined || fieldId == null || fieldId === "") {
+        layer.msg("场地未选择");
+        return;
+    }
+    if (equipId === undefined || equipId == null || equipId === "") {
+        layer.msg("器材未选择");
+        return;
+    }
+    if (time === undefined || time == null || time === "") {
+        layer.msg("时间未选择");
+        return;
+    }
+    console.log(coachId);
+    console.log(fieldId);
+    console.log(equipId);
+    console.log(time);
 }

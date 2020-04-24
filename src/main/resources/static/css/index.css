@@ -308,5 +308,9 @@ html {
     background: #9F9F9F;
 }
 
+#table-appointment {
+    width: 1000px;
+}
+
 /*admin*/
 
