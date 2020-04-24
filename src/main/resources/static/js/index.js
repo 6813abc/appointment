@@ -215,6 +215,7 @@ function init() {
             //initEquip();
             $.removeCookie('date-day-next');
             $.removeCookie('choice-day-time');
+            $.removeCookie('choice-day-time-show');
             $.cookie('date-day-next', "1");
             initTime(1);
         } else {
@@ -736,32 +737,18 @@ function initTime(firstDay) {
     if (choiceTime != null) {
         let choiceTimeArrys = choiceTime.split("@@");
         $.each(choiceTimeArrys, function (i, val) {
-            let values = choiceTime.split("$$");
-            let year = '';
-            let dateDayNext = '';
-            let trSeq = '';
-            let tdSeq = '';
-            console.log("values:" + values);
-            $.each(values, function (j, val1) {
-                if (j === 2) {
-                    year = val1;
+            let values = val.split("$$");
+            let year = values[2];
+            let nowYear = $("#time-f").html();
+            let dateDayNext = values[3];
+            let trSeq = Number(values[4]) - 1;
+            let tdSeq = Number(values[5]) - 1;
+            if (year === nowYear && dateDayNext === $.cookie('date-day-next')) {
+                if (trSeq === 0) {
+                    $("#time-day tbody tr:eq(" + trSeq + ") td:eq(" + tdSeq + ")").addClass("day-selection");
+                } else {
+                    $("#time-day tbody tr:eq(" + trSeq + ") td:eq(" + tdSeq + ")").addClass("day-selection");
                 }
-                if (j === 3) {
-                    dateDayNext = val1;
-                }
-                if (j === 4) {
-                    trSeq = val1;
-                }
-                if (j === 5) {
-                    tdSeq = val1;
-                }
-            });
-            console.log("year:" + year);
-            console.log("year:" + $("#time-f").html());
-            console.log("dateDayNext:" + dateDayNext);
-            console.log("dateDayNext:" + $.cookie('date-day-next'));
-            if (year === $("#time-f").html() && dateDayNext === $.cookie('date-day-next')) {
-                $("#time-day tbody tr:eq(" + trSeq + ") td:eq(" + tdSeq + ")").addClass("day-selection");
             }
         });
     }
@@ -869,10 +856,31 @@ function choiceDate(th) {
     }
     $(th).addClass("day-selection");
     $(th).html("选中");
-    let value = day + "$$" + time + "$$" + $("#time-f").html() + "$$" + $.cookie('date-day-next') + "$$" + trSeq + "$$" + tdSeq;
+    let year = $("#time-f").html();
+    let value = day + "$$" + time + "$$" + year + "$$" + $.cookie('date-day-next') + "$$" + trSeq + "$$" + tdSeq;
     if ($.cookie("choice-day-time") === undefined || $.cookie("choice-day-time") == null) {
         $.cookie("choice-day-time", value);
     } else {
-        $.cookie("choice-day-time", $.cookie("choice-day-time") + "@@" + value);
+        if ($.cookie("choice-day-time").indexOf(value) === -1) {
+            $.cookie("choice-day-time", $.cookie("choice-day-time") + "@@" + value);
+        } else {
+            $.cookie("choice-day-time", $.cookie("choice-day-time").replace("@@" + value, ""));
+            $.cookie("choice-day-time", $.cookie("choice-day-time").replace(value, ""));
+            let trSeq1 = Number(trSeq) - 1;
+            let tdSeq1 = Number(tdSeq) - 1;
+            $("#time-day tbody tr:eq(" + trSeq1 + ") td:eq(" + tdSeq1 + ")").removeClass("day-selection");
+        }
     }
+    let value1 = year + "/" + day + "/" + time;
+    if ($.cookie("choice-day-time-show") === undefined || $.cookie("choice-day-time-show") == null) {
+        $.cookie("choice-day-time-show", value1);
+    } else {
+        if ($.cookie("choice-day-time-show").indexOf(value1) === -1) {
+            $.cookie("choice-day-time-show", $.cookie("choice-day-time-show") + "、" + value1);
+        } else {
+            $.cookie("choice-day-time-show", $.cookie("choice-day-time-show").replace("、" + value1, ""));
+            $.cookie("choice-day-time-show", $.cookie("choice-day-time-show").replace(value1, ""));
+        }
+    }
+    $("#choice-time-span").text("你选择的时间为:" + $.cookie("choice-day-time-show"));
 }
