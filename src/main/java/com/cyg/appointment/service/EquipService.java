@@ -2,48 +2,76 @@ package com.cyg.appointment.service;
 
 import com.cyg.appointment.dto.EquipTypeAddDto;
 import com.cyg.appointment.dto.EquipTypeUpdateDto;
+import com.cyg.appointment.entity.EquipType;
+import com.cyg.appointment.entity.File;
 import com.cyg.appointment.exception.BaseResult;
+import com.cyg.appointment.exception.ResultEnum;
+import com.cyg.appointment.exception.ResultUtil;
+import com.cyg.appointment.mapper.EquipMapper;
+import com.cyg.appointment.mapper.FileMapper;
+import com.cyg.appointment.mapper.SpecificMapper;
+import com.cyg.appointment.util.DateUtil;
+import com.cyg.appointment.vo.EquipTypeSelectVo;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * @Description: equip
- * @Author: cyg
- * @Date: 2019/1/9
- * @Version:
+ * @author cyg
+ * @date 2020/1/9 16:33
  **/
-public interface EquipService {
+@Service
+@Slf4j
+public class EquipService {
 
+    @Autowired
+    private EquipMapper equipMapper;
+    @Autowired
+    private FileMapper fileMapper;
+    @Autowired
+    private SpecificMapper specificMapper;
 
-    /**
-     * 功能描述:
-     *
-     * @param token           token
-     * @param equipTypeAddDto 添加equipType
-     * @return com.cyg.appointment.exception.BaseResult
-     * @author cyg
-     * @date 2020/1/9
-     */
-    BaseResult addEquipTye(String token, EquipTypeAddDto equipTypeAddDto);
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public BaseResult addEquipTye(String token, EquipTypeAddDto equipTypeAddDto) {
+        EquipType equipType = new EquipType();
+        BeanUtils.copyProperties(equipTypeAddDto, equipType);
+        //新增器材图片
+        File file = new File();
+        file.setBase64(equipTypeAddDto.getPictureCode());
+        fileMapper.addFile(file);
+        equipType.setPictureId(file.getId());
+        equipType.setCreateTime(DateUtil.getToDayTime());
+        //新增器材种类
+        equipMapper.addEquipType(equipType);
+        return ResultUtil.success(ResultEnum.OK);
+    }
 
+    @Override
+    public BaseResult updateEquipType(String token, EquipTypeUpdateDto equipTypeUpdateDto) {
+        EquipType equipType = equipMapper.selectEquipTypeById(equipTypeUpdateDto.getId());
+        BeanUtils.copyProperties(equipTypeUpdateDto, equipType);
+        equipMapper.updateEquipType(equipType);
+        return ResultUtil.success(ResultEnum.OK);
+    }
 
-    /**
-     * 功能描述:
-     *
-     * @param token              token
-     * @param equipTypeUpdateDto 编辑equipType
-     * @return com.cyg.appointment.exception.BaseResult
-     * @author cyg
-     * @date 2020/1/10
-     */
-    BaseResult updateEquipType(String token, EquipTypeUpdateDto equipTypeUpdateDto);
-
-    /**
-     * 功能描述:查询器材种类
-     *
-     * @param token token
-     * @param page  页数
-     * @param limit 限制
-     * @return com.cyg.appointment.exception.BaseResult
-     * @date 2020/1/9
-     */
-    BaseResult selectAllEquipType(String token, Long page, Integer limit);
+    @Override
+    public BaseResult selectAllEquipType(String token, Long page, Integer limit) {
+        Long index = (page - 1) * limit;
+        List<EquipTypeSelectVo> equipTypeSelectVos = equipMapper.selectAllEquipType(index, limit);
+        for (EquipTypeSelectVo equipTypeSelectVo : equipTypeSelectVos){
+            Long count = equipMapper.selectEquipTypeLengthByEquipTypeId(equipTypeSelectVo.getId());
+            equipTypeSelectVo.setCount(count);
+        }
+        Map<String, Object> map = new HashMap<>(4);
+        map.put("length", equipMapper.selectEquipTypeLength());
+        map.put("data", equipTypeSelectVos);
+        return ResultUtil.success(ResultEnum.OK, map);
+    }
 }

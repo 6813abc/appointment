@@ -1,7 +1,7 @@
 package com.cyg.appointment.controller;
 
 import com.cyg.appointment.exception.BaseResult;
-import com.cyg.appointment.service.impl.FieldService;
+import com.cyg.appointment.service.FieldService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;

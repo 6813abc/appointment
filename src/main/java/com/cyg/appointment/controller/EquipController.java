@@ -4,7 +4,6 @@ import com.cyg.appointment.dto.EquipTypeAddDto;
 import com.cyg.appointment.dto.EquipTypeUpdateDto;
 import com.cyg.appointment.exception.BaseResult;
 import com.cyg.appointment.service.EquipService;
-import com.cyg.appointment.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;

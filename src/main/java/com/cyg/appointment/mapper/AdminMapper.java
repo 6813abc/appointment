@@ -1,7 +1,6 @@
 package com.cyg.appointment.mapper;
 
 import com.cyg.appointment.entity.Admin;
-import com.cyg.appointment.entity.User;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 

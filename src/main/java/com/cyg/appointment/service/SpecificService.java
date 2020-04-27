@@ -3,51 +3,42 @@ package com.cyg.appointment.service;
 import com.cyg.appointment.entity.EquipTypeSpecificChoice;
 import com.cyg.appointment.entity.Specific;
 import com.cyg.appointment.exception.BaseResult;
+import com.cyg.appointment.exception.ResultEnum;
+import com.cyg.appointment.exception.ResultUtil;
+import com.cyg.appointment.mapper.SpecificMapper;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-/**
- * @Description: 属性
- * @Author: cyg
- * @Date: 2019/12/27
- * @Version:
- **/
-public interface SpecificService {
+@Service
+@Transactional
+@Slf4j
+public class SpecificService {
 
-    /**
-     * 功能描述:
-     *
-     * @param token token
-     * @return com.cyg.appointment.exception.BaseResult
-     * @date 2020/1/4
-     */
-    BaseResult selectAllSpecific(String token);
+    @Autowired
+    private SpecificMapper specificMapper;
 
-    /**
-     * 功能描述:
-     *
-     * @param token      token
-     * @param specificId 属性id
-     * @return com.cyg.appointment.exception.BaseResult
-     * @date 2020/1/4
-     */
-    BaseResult selectAllEquipTypeSpecificChoiceBySpecificId(String token, Long specificId);
+    
+    public BaseResult selectAllSpecific(String token) {
 
-    /**
-     * 功能描述:
-     *
-     * @param token    token
-     * @param specific 属性
-     * @return com.cyg.appointment.exception.BaseResult
-     * @date 2020/1/4
-     */
-    BaseResult addSpecific(String token, Specific specific);
+        return ResultUtil.success(ResultEnum.OK, specificMapper.selectAllSpecific());
+    }
 
-    /**
-     * 功能描述:
-     *
-     * @param token                   token
-     * @param equipTypeSpecificChoice 属性值选项
-     * @return com.cyg.appointment.exception.BaseResult
-     * @date 2020/1/4
-     */
-    BaseResult addEquipTypeSpecificChoice(String token, EquipTypeSpecificChoice equipTypeSpecificChoice);
+    
+    public BaseResult selectAllEquipTypeSpecificChoiceBySpecificId(String token, Long specificId) {
+        return ResultUtil.success(ResultEnum.OK, specificMapper.selectAllEquipTypeSpecificChoiceBySpecificId(specificId));
+    }
+
+    
+    public BaseResult addSpecific(String token, Specific specific) {
+        specificMapper.addSpecific(specific);
+        return ResultUtil.success(ResultEnum.OK);
+    }
+
+    
+    public BaseResult addEquipTypeSpecificChoice(String token, EquipTypeSpecificChoice equipTypeSpecificChoice) {
+        specificMapper.addEquipTypeSpecificChoice(equipTypeSpecificChoice);
+        return ResultUtil.success(ResultEnum.OK);
+    }
 }

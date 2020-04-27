@@ -1,4 +1,4 @@
-package com.cyg.appointment.service.impl;
+package com.cyg.appointment.service;
 
 import com.cyg.appointment.exception.BaseResult;
 import com.cyg.appointment.exception.ResultEnum;

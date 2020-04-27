@@ -3,7 +3,6 @@ package com.cyg.appointment.controller;
 import com.cyg.appointment.entity.EquipTypeSpecificChoice;
 import com.cyg.appointment.entity.Specific;
 import com.cyg.appointment.exception.BaseResult;
-import com.cyg.appointment.service.RecordService;
 import com.cyg.appointment.service.SpecificService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;

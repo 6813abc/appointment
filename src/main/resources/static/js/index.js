@@ -836,10 +836,10 @@ function choiceDate(th) {
     //console.log("第" + (trSeq + 1) + "行，第" + (tdSeq + 1) + "列");
     if ((trSeq) === 1) {
         time = $(th).parent().find("td").eq(1).html();
-        day = $(th).parent().parent().parent().find("thead").eq(0).find("tr").eq(0).find("th").eq(tdSeq).html();
+        day = $(th).parent().parent().parent().find("thead").eq(0).find("tr").eq(0).find("th").eq(tdSeq - 1).html();
     } else {
         time = $(th).parent().find("td").eq(0).html();
-        day = $(th).parent().parent().parent().find("thead").eq(0).find("tr").eq(0).find("th").eq(tdSeq + 1).html();
+        day = $(th).parent().parent().parent().find("thead").eq(0).find("tr").eq(0).find("th").eq(tdSeq).html();
     }
     $(th).addClass("day-selection");
     $(th).html("选中");
@@ -913,6 +913,7 @@ function nextWeek() {
     initTime($.cookie('date-day-next'));
 }
 
+//预约确认
 function appointmentSure() {
     let coachId = $.cookie('coachId');
     let fieldId = $.cookie('fieldId');

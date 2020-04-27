@@ -1,36 +1,47 @@
 package com.cyg.appointment.service;
 
+import com.cyg.appointment.entity.Consumption;
+import com.cyg.appointment.entity.Recharge;
 import com.cyg.appointment.exception.BaseResult;
+import com.cyg.appointment.exception.ResultUtil;
+import com.cyg.appointment.mapper.ConsumptionMapper;
+import com.cyg.appointment.mapper.RechargeMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * @Description: 记录
- * @Author: cyg
- * @Date: 2019/12/27
- * @Version:
+ * @author cyg
+ * @date 2020/1/9 10:05
  **/
-public interface RecordService {
+@Service
+public class RecordService {
 
-    /**
-     * 功能描述:
-     *
-     * @param token token
-     * @param page  页数
-     * @param limit 限制
-     * @param phone 联系方式
-     * @return com.cyg.appointment.exception.BaseResult
-     * @date 2020/1/4
-     */
-    BaseResult selectAllRecharge(String token, String phone, Long page, Integer limit);
+    @Autowired
+    private RechargeMapper rechargeMapper;
+    @Autowired
+    private ConsumptionMapper consumptionMapper;
 
-    /**
-     * 功能描述:
-     *
-     * @param token token
-     * @param page  页数
-     * @param limit 限制
-     * @param phone 联系方式
-     * @return com.cyg.appointment.exception.BaseResult
-     * @date 2020/1/4
-     */
-    BaseResult selectAllConsumption(String token, String phone, Long page, Integer limit);
+
+    public BaseResult selectAllRecharge(String token, String phone, Long page, Integer limit) {
+        Long index = (page - 1) * limit;
+        List<Recharge> recharges = rechargeMapper.selectAllRecharge(phone, index, limit);
+        Map<String, Object> map = new HashMap<>(4);
+        map.put("length", rechargeMapper.selectLength());
+        map.put("data", recharges);
+        return ResultUtil.success(map);
+    }
+
+
+    public BaseResult selectAllConsumption(String token, String phone, Long page, Integer limit) {
+        Long index = (page - 1) * limit;
+        List<Consumption> recharges = consumptionMapper.selectAllConsumption(phone, index, limit);
+        Map<String, Object> map = new HashMap<>(4);
+        map.put("length", consumptionMapper.selectLength());
+        map.put("data", recharges);
+        return ResultUtil.success(map);
+    }
 }
