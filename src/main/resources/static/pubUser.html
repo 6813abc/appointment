@@ -149,24 +149,16 @@
         <label class="type1" style="height:120px;">
             <span>充值金额：</span>
             <div>
-                <span class="a-num" RMB="50">50RMB<img class="select-img" src="img/select-icon.png"
-                                                       alt=""></span>
-                <span class="a-num" RMB="100">100RMB<img class="select-img" src="img/select-icon.png"
-                                                         alt=""></span>
+                <span class="a-num" RMB="50">50RMB<img class="select-img" src="img/select-icon.png" alt=""></span>
+                <span class="a-num" RMB="100">100RMB<img class="select-img" src="img/select-icon.png" alt=""></span>
                 <span class="a-num active" RMB="200">200RMB<img class="select-img" src="img/select-icon.png"
                                                                 alt=""></span>
-                <span class="a-num" RMB="500">500RMB<img class="select-img" src="img/select-icon.png"
-                                                         alt=""></span>
-                <span class="a-num" RMB="1000">1000RMB<img class="select-img" src="img/select-icon.png"
-                                                           alt=""></span>
-                <span class="a-num" RMB="2000">2000RMB<img class="select-img" src="img/select-icon.png"
-                                                           alt=""></span>
-                <span class="a-num" RMB="3000">3000RMB<img class="select-img" src="img/select-icon.png"
-                                                           alt=""></span>
-                <span class="a-num" RMB="5000">5000RMB<img class="select-img" src="img/select-icon.png"
-                                                           alt=""></span>
-                <span class="a-num" RMB="10000">10000RMB<img class="select-img" src="img/select-icon.png"
-                                                             alt=""></span>
+                <span class="a-num" RMB="500">500RMB<img class="select-img" src="img/select-icon.png" alt=""></span>
+                <span class="a-num" RMB="1000">1000RMB<img class="select-img" src="img/select-icon.png" alt=""></span>
+                <span class="a-num" RMB="2000">2000RMB<img class="select-img" src="img/select-icon.png" alt=""></span>
+                <span class="a-num" RMB="3000">3000RMB<img class="select-img" src="img/select-icon.png" alt=""></span>
+                <span class="a-num" RMB="5000">5000RMB<img class="select-img" src="img/select-icon.png" alt=""></span>
+                <span class="a-num" RMB="10000">10000RMB<img class="select-img" src="img/select-icon.png" alt=""></span>
             </div>
         </label>
         <label class="type2">
@@ -189,21 +181,21 @@
         <i class="layui-icon layui-icon-ok" id="index-recharge-success-i">充值成功</i>
     </div>
     <div class='layui-form-item'>
-        <label class='layui-form-label'>交易时间：</label>
+        <label class='layui-form-label'>交易时间</label>
         <div class='layui-input-block'>
             <input type='text' id='recharge-time' lay-verify='required' autocomplete='off'
                    class='layui-input'>
         </div>
     </div>
     <div class='layui-form-item'>
-        <label class='layui-form-label'>交易金额：</label>
+        <label class='layui-form-label'>交易金额</label>
         <div class='layui-input-block'>
             <input type='text' id='recharge-money' lay-verify='required' autocomplete='off'
                    class='layui-input'>
         </div>
     </div>
     <div class='layui-form-item'>
-        <label class='layui-form-label'>交易流水：</label>
+        <label class='layui-form-label'>交易流水</label>
         <div class='layui-input-block'>
             <input type='text' id='recharge-flow' lay-verify='required' autocomplete='off'
                    class='layui-input'>
@@ -211,6 +203,41 @@
     </div>
 </div>
 
+
+<!--预约成功界面-->
+<div id="index-appointment-success" style="display: none">
+    <div id="index-appointment-success-son">
+        <i class="layui-icon layui-icon-ok" id="index-appointment-success-i">预约成功</i>
+    </div>
+    <div class='layui-form-item'>
+        <label class='layui-form-label'>预计花费</label>
+        <div class='layui-input-block'>
+            <input type='text' id='appointment-money' lay-verify='required' autocomplete='off'
+                   class='layui-input'>
+        </div>
+    </div>
+    <div class='layui-form-item'>
+        <label class='layui-form-label'>会员折扣</label>
+        <div class='layui-input-block'>
+            <input type='text' id='appointment-discount' lay-verify='required' autocomplete='off'
+                   class='layui-input'>
+        </div>
+    </div>
+    <div class='layui-form-item'>
+        <label class='layui-form-label'>实际花费</label>
+        <div class='layui-input-block'>
+            <input type='text' id='appointment-money-actual' lay-verify='required' autocomplete='off'
+                   class='layui-input'>
+        </div>
+    </div>
+    <div class='layui-form-item'>
+        <label class='layui-form-label'>账号余额</label>
+        <div class='layui-input-block'>
+            <input type='text' id='appointment-balance' lay-verify='required' autocomplete='off'
+                   class='layui-input'>
+        </div>
+    </div>
+</div>
 <!--充值消费预约记录-->
 <div id="index-record" style="display: none">
     <div id="index-div-record">

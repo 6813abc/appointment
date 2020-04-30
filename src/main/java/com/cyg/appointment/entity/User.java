@@ -24,5 +24,5 @@ public class User {
     private Long memberId;
     private String sex;
     private String address;
-    private Long balance;
+    private Double balance;
 }

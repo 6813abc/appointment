@@ -208,21 +208,12 @@ function init() {
         } else if ($.cookie('flagUser') === 'index') {
             $('#index-index').addClass('layui-this');
         } else if ($.cookie('flagUser') === 'appointment') {
-            $.removeCookie('coachId');
-            $.removeCookie('equipId');
-            $.removeCookie('fieldId');
-            $.removeCookie('coachName');
-            $.removeCookie('equipName');
-            $.removeCookie('fieldAddress');
             //初始化步骤
             $('#index-to-appointment').addClass('layui-this');
             //加载教练信息、器材信息、场地信息,用来供用户选择
             initCoach();
             initField();
             initEquip();
-            $.removeCookie('date-day-next');
-            $.removeCookie('choice-day-time');
-            $.removeCookie('choice-day-time-show');
             $.cookie('date-day-next', "1");
             initTime(1);
         } else {
@@ -289,20 +280,20 @@ function openRecharge(layer) {
 
 //加载验证码
 function loadCode(layer) {
-    var url = $.cookie('url') + "/getCode";
+    let url = $.cookie('url') + "/getCode";
     $.ajax({
         url: url,
         async: false,
         success: function (data) {
             if (data.code === '200') {
                 //给验证码图片框赋值
-                var code = "data:image/png;base64," + data.data;
+                let code = "data:image/png;base64," + data.data;
                 $('#img-code').attr('src', code);
             } else {
                 layer.msg(data.message, {icon: 5});
             }
         }, error: function (data) {
-            layer.msg(data.status, {icon: 5});
+            layer.msg("获取验证码失败", {icon: 5});
         }
     });
 }
@@ -331,7 +322,7 @@ function toIndex() {
 
 //确认登录
 function sureLogin(layer, data, indexOpenLogin) {
-    var url = $.cookie('url') + "/userLogin";
+    let url = $.cookie('url') + "/userLogin";
     $.ajax({
             url: url,
             data: data.field,
@@ -363,7 +354,7 @@ function sureLogin(layer, data, indexOpenLogin) {
 
 //确认注册
 function sureRegister(layer, data, code, indexOpenRegister) {
-    var url = $.cookie('url') + "/addUser";
+    let url = $.cookie('url') + "/addUser";
     data.field.code = code;
     $.ajax({
         url: url,
@@ -385,8 +376,8 @@ function sureRegister(layer, data, code, indexOpenRegister) {
 
 //续费
 function renewMember(month) {
-    var unitPrice = 200;
-    var money;
+    let unitPrice = 200;
+    let money;
     if (month === 1) {
         money = unitPrice;
     } else if (month === 3) {
@@ -396,7 +387,7 @@ function renewMember(month) {
     } else if (month === 12) {
         money = unitPrice * month * 0.8;
     }
-    var url = $.cookie('url') + "/renewMember";
+    let url = $.cookie('url') + "/renewMember";
     $.ajax({
         url: url,
         data: {
@@ -429,8 +420,8 @@ function renewMember(month) {
 
 //确定充值
 function sureRecharge(layer, indexOpenRecharge) {
-    var url = $.cookie('url') + "/rechargeBalance";
-    var money = $(".num_rmb").val();
+    let url = $.cookie('url') + "/rechargeBalance";
+    let money = $(".num_rmb").val();
     $.ajax({
         url: url,
         data: {
@@ -735,7 +726,7 @@ function initTime(firstDay) {
     for (let i = Number(firstDay); i < Number(firstDay) + 7; i++) {
         let idNum = Number(i) % 7 === 0 ? 7 : Number(i) % 7;
         let id = "time-" + idNum;
-        date = addDay(Number(i) - 1);
+        date = addDay(Number(i));
         let value = formatDate(date);
         $("#" + id).html(value);
     }
@@ -781,6 +772,8 @@ function initCoachClick(id, name) {
     $.cookie('coachName', coachName);
     $("#choice-coach-span").text("你选择的教练为：" + coachName);
     $("#appointment-coach").html(coachName);
+    //查询选中教练的预约时间表
+    selectCoachAppointment();
 }
 
 //选择场地点击
@@ -814,7 +807,7 @@ function initEquipClick(id, name) {
         equipId = id;
     } else {
         if (equipName.indexOf(name) === -1) {
-            equipName = equipName + "," + name
+            equipName = equipName + "," + name;
             equipId = equipId + "," + id
         } else {
             equipName.replace("," + name, "");
@@ -855,6 +848,7 @@ function choiceDate(th) {
             $.cookie("choice-day-time", $.cookie("choice-day-time").replace(value, ""));
             let trSeq1 = Number(trSeq) - 1;
             let tdSeq1 = Number(tdSeq) - 1;
+            $(th).html("选择");
             $("#time-day tbody tr:eq(" + trSeq1 + ") td:eq(" + tdSeq1 + ")").removeClass("day-selection");
         }
     }
@@ -885,7 +879,7 @@ function choiceDate(th) {
 //在date时间添加dayNumber天
 function addDay(dayNumber, date) {
     date = date ? date : new Date();
-    let ms = dayNumber * (1000 * 60 * 60 * 24)
+    let ms = dayNumber * (1000 * 60 * 60 * 24);
     return new Date(date.getTime() + ms);
 }
 
@@ -905,12 +899,16 @@ function lastWeek() {
     } else {
         layer.msg("不能选择过去的时间");
     }
+    //查询选中教练的预约时间表
+    selectCoachAppointment();
 }
 
 //时间下一页点击
 function nextWeek() {
     $.cookie('date-day-next', Number($.cookie('date-day-next')) + 7);
     initTime($.cookie('date-day-next'));
+    //查询选中教练的预约时间表
+    selectCoachAppointment();
 }
 
 //预约确认
@@ -918,7 +916,7 @@ function appointmentSure() {
     let coachId = $.cookie('coachId');
     let fieldId = $.cookie('fieldId');
     let equipId = $.cookie('equipId');
-    let time = $.cookie("choice-day-time-show")
+    let time = $.cookie("choice-day-time-show");
     if (coachId === undefined || coachId == null || coachId === "") {
         layer.msg("教练未选择");
         return;
@@ -935,8 +933,133 @@ function appointmentSure() {
         layer.msg("时间未选择");
         return;
     }
-    console.log(coachId);
-    console.log(fieldId);
-    console.log(equipId);
-    console.log(time);
+    var url = $.cookie('url') + "/addAppointment";
+    $.ajax({
+        url: url,
+        data: {
+            token: $.cookie('userToken'),
+            phone: localStorage.getItem('userPhone'),
+            coachId: coachId,
+            fieldId: fieldId,
+            equipId: equipId,
+            time: time
+        },
+        async: false,
+        success: function (data) {
+            if (data.code === '200') {
+                $(".choice-date").removeClass("day-selection");
+                $("#choice-coach-span").text("你还未选择教练，请点击选择");
+                $("#choice-field-span").text("你还未选择场地，请点击选择");
+                $("#choice-equip-span").text("你还未选择器材，请点击选择");
+                $("#choice-time-span").text("你还未选择时间，请点击选择");
+                layer.open({
+                    type: 1,
+                    title: '预约成功',
+                    content: $('#index-appointment-success'),
+                    area: ['200px', 'auto'],
+                    anim: 1
+                });
+                $("#appointment-money").val(data.data.moneyCountAll);
+                $("#appointment-discount").val(data.data.disCountAll);
+                $("#appointment-money-actual").val(data.data.actualMoney);
+                $("#appointment-balance").val(data.data.balance);
+                //查询选中教练的预约时间表
+                selectCoachAppointment();
+                $.removeCookie('coachId');
+                $.removeCookie('equipId');
+                $.removeCookie('fieldId');
+                $.removeCookie('coachName');
+                $.removeCookie('equipName');
+                $.removeCookie('fieldAddress');
+                $.removeCookie('date-day-next');
+                $.removeCookie('choice-day-time');
+                $.removeCookie('choice-day-time-show');
+                $.cookie('date-day-next',1);
+            } else {
+                layer.msg(data.message, {icon: 5});
+            }
+        },
+        error: function (data) {
+            layer.msg(data.status, {icon: 5});
+        }
+    });
+    /*console.log(coachId);
+     console.log(fieldId);
+     console.log(equipId);
+     console.log(time);*/
+}
+
+//查询选中教练的预约时间表
+function selectCoachAppointment() {
+    $(".day-ago-selection").removeClass("day-ago-selection").addClass("choice-date").click(function () {
+        choiceDate(this);
+    });
+    let coachId = $.cookie('coachId');
+    if (coachId !== undefined && coachId != null && coachId !== "") {
+        let url = $.cookie('url') + "/selectCoachAppointment";
+        $.ajax({
+            url: url,
+            data: {
+                token: $.cookie('userToken'),
+                coachId: coachId,
+            },
+            async: false,
+            success: function (data) {
+                if (data.code === '200') {
+                    let nowYear = $("#time-f").html();
+                    $.each(data.data, function (i, val) {
+                        if (val.startDate.substring(0, 4) === nowYear.substring(0, 4)) {
+                            let y = 0;
+                            let x = 0;
+                            let flag = 0;
+                            let startHour = val.startDate.split(" ")[1].substring(0, 5);
+                            let endHour = val.endDate.split(" ")[1].substring(0, 5);
+                            let yValue = startHour + "-" + endHour;
+                            let xValue = val.endDate.substring(5, 10).replace("-", "/");
+                            let xValues = xValue.split("/");
+                            let xValue1 = xValues[0].startsWith('0') ? xValues[0].substring(1, xValues[0].length) : xValues[0];
+                            let xValue2 = xValues[1].startsWith('0') ? xValues[1].substring(1, xValues[1].length) : xValues[1];
+                            xValue = xValue1 + "/" + xValue2;
+                            if (yValue === "08:00-10:00") {
+                                y = 0;
+                            } else if (yValue === "10:00-12:00") {
+                                y = 1;
+                            } else if (yValue === "12:00-02:00") {
+                                y = 2;
+                            } else if (yValue === "02:00-04:00") {
+                                y = 3;
+                            } else if (yValue === "04:00-06:00") {
+                                y = 4;
+                            } else if (yValue === "06:00-08:00") {
+                                y = 5;
+                            }
+                            let firstRow = $("#time-day").find('thead').eq(0).find('th');
+                            $.each(firstRow, function (i) {
+                                //获取第一行第i列的数据
+                                let val = firstRow.eq(i).html();
+                                val = val.split("(")[0];
+                                if (val === xValue) {
+                                    flag = 1;
+                                    if (y === 0) {
+                                        x = i;
+                                    } else {
+                                        x = i - 1;
+                                    }
+                                }
+                            });
+                            if (flag === 1) {
+                                $("#time-day tbody tr:eq(" + y + ") td:eq(" + x + ")").addClass("day-ago-selection")
+                                    .html("已选").removeClass("choice-date").off('click');
+                            }
+                        }
+                    });
+                } else {
+                    layer.msg(data.message, {icon: 5});
+                }
+            },
+            error: function (data) {
+                layer.msg(data.status, {icon: 5});
+            }
+        });
+    }
 }

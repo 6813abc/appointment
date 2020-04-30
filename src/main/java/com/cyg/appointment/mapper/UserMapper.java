@@ -76,16 +76,16 @@ public interface UserMapper {
      * @date 2020/1/5
      */
     @Update("update user set balance = #{balance} where phone =#{phone}")
-    void updateBalance(String phone, Long balance);
+    void updateBalance(String phone, Double balance);
 
     /**
      * 功能描述:
      *
-     * @param phone    电弧
+     * @param phone    电话
      * @param memberId memberId
      * @return void
      * @date 2020/1/6
      */
     @Update("update user set member_id=#{memberId} where phone =#{phone}")
-    void uodateMemberId(String phone, Long memberId);
+    void updateMemberId(String phone, Long memberId);
 }

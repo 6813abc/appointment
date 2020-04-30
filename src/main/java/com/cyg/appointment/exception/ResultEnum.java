@@ -22,6 +22,7 @@ public enum ResultEnum {
     IS_NOT_AUTH("500010", "账号无权限"),
     TOKEN_IS_NOT_AUTH("50011", "登录过期"),
     BALANCE_IS_LOW("50012", "余额不足"),
+    TIME_NOT_NULL("50013", "时间不能为空"),
     ;
     private String code;
     private String message;

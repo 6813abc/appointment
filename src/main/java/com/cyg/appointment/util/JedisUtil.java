@@ -13,8 +13,12 @@ import redis.clients.jedis.JedisPool;
  **/
 @Component
 public class JedisUtil {
-    @Autowired
-    JedisPool jedisPool;
+
+    private final JedisPool jedisPool;
+
+    public JedisUtil(JedisPool jedisPool) {
+        this.jedisPool = jedisPool;
+    }
 
     public void set(String key, String value) {
         try (Jedis jedis = jedisPool.getResource()) {
@@ -23,6 +27,7 @@ public class JedisUtil {
             e.printStackTrace();
         }
     }
+
     public void set(String key, String value, int time) {
         try (Jedis jedis = jedisPool.getResource()) {
             jedis.setex(key, time, value);

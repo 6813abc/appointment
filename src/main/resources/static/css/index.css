@@ -267,14 +267,18 @@ html {
     border: 0;
 }
 
-#index-recharge-success-i {
+#index-appointment-success input {
+    border: 0;
+}
+
+#index-recharge-success-i, #index-appointment-success-i {
     background: #00FF00;
     font-size: 30px;
     color: white;
     border-radius: 30%;
 }
 
-#index-recharge-success-son {
+#index-recharge-success-son, #index-appointment-success-son {
     text-align: center;
     margin: 0 auto;
 }
@@ -308,8 +312,16 @@ html {
     background: #9F9F9F;
 }
 
+.day-ago-selection {
+    background: #74778c;
+}
+
 #table-appointment {
     width: 1000px;
+}
+
+.layui-nav-child a {
+    margin-top: 10px;
 }
 
 /*admin*/

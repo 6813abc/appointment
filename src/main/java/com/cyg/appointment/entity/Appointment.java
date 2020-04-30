@@ -17,11 +17,18 @@ import sun.rmi.runtime.Log;
 public class Appointment {
 
     private Long id;
-    private Long userId;
+    private String phone;
     private Long coachId;
     private Long fieldId;
     private String createDate;
     private String startDate;
     private String endDate;
-    private Long money;
+    /**
+     * 消费金额
+     **/
+    private Double money;
+    /**
+     * 折扣金额
+     **/
+    private Double disCount;
 }

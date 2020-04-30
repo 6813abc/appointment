@@ -8,7 +8,7 @@ spring:
     database: 0
     host: 119.27.171.107
     port: 6379
-    timeout: 500
+    timeout: 5000
     password: 741623
 
 #JWT

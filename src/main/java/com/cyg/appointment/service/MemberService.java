@@ -35,7 +35,7 @@ public class MemberService {
     @Autowired
     private ConsumptionMapper consumptionMapper;
 
-    
+
     @Transactional(rollbackFor = Exception.class)
     public BaseResult renewMember(String token, String phone, String data, Long money) throws Exception {
         if (StringUtils.isEmpty(phone)) {
@@ -44,7 +44,7 @@ public class MemberService {
         return consumption(phone, money, Constants.OPENM_EMBERSHIP, data);
     }
 
-    
+
     public BaseResult consumption(String phone, Long money, Integer choice, String data) throws Exception {
         //校验用户账号密码
         User user = userMapper.getUserByPhone(phone);
@@ -52,7 +52,7 @@ public class MemberService {
             return ResultUtil.error(ResultEnum.NO_USER_INFO);
         }
         //余额不足
-        Long balance = user.getBalance() == null ? 0 : user.getBalance();
+        Double balance = user.getBalance() == null ? 0 : user.getBalance();
         if (balance < money) {
             return ResultUtil.error(ResultEnum.BALANCE_IS_LOW);
         }
@@ -70,7 +70,7 @@ public class MemberService {
                 member.setMemberDate(DateUtil.getToDayTime());
                 member.setUpToDate(DateUtil.getTime(Integer.parseInt(data) * 30));
                 memberMapper.addMember(member);
-                userMapper.uodateMemberId(phone, member.getId());
+                userMapper.updateMemberId(phone, member.getId());
             } else {
                 //会员信息不为空
                 Member member = memberMapper.getMemberById(user.getMemberId());

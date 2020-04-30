@@ -37,7 +37,6 @@ public class EquipService {
     @Autowired
     private SpecificMapper specificMapper;
 
-    @Override
     @Transactional(rollbackFor = Exception.class)
     public BaseResult addEquipTye(String token, EquipTypeAddDto equipTypeAddDto) {
         EquipType equipType = new EquipType();
@@ -53,7 +52,7 @@ public class EquipService {
         return ResultUtil.success(ResultEnum.OK);
     }
 
-    @Override
+    
     public BaseResult updateEquipType(String token, EquipTypeUpdateDto equipTypeUpdateDto) {
         EquipType equipType = equipMapper.selectEquipTypeById(equipTypeUpdateDto.getId());
         BeanUtils.copyProperties(equipTypeUpdateDto, equipType);
@@ -61,7 +60,7 @@ public class EquipService {
         return ResultUtil.success(ResultEnum.OK);
     }
 
-    @Override
+    
     public BaseResult selectAllEquipType(String token, Long page, Integer limit) {
         Long index = (page - 1) * limit;
         List<EquipTypeSelectVo> equipTypeSelectVos = equipMapper.selectAllEquipType(index, limit);

@@ -134,7 +134,7 @@ public class UserService  {
         if (user == null) {
             return ResultUtil.error(ResultEnum.NO_USER_INFO);
         }
-        Long balance = user.getBalance() == null ? 0 : user.getBalance();
+        Double balance = user.getBalance() == null ? 0 : user.getBalance();
         balance = balance + money;
         userMapper.updateBalance(phone, balance);
         //插入交易流水到数据库
