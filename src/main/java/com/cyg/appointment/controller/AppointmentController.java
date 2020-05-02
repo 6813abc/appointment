@@ -29,4 +29,9 @@ public class AppointmentController {
     public BaseResult selectCoachAppointment(String token, Long coachId) {
         return appointmentService.selectCoachAppointment(token, coachId);
     }
+
+    @RequestMapping("/selectAllAppointment")
+    public BaseResult selectAllAppointment(String token, String phone, Long page, Integer limit) {
+        return appointmentService.selectAllAppointment(token, phone, page, limit);
+    }
 }

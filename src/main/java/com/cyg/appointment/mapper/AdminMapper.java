@@ -29,6 +29,19 @@ public interface AdminMapper {
     Admin getAdminByPhone(String phone);
 
     /**
+     * 功能描述:根据id管理员
+     *
+     * @param id id
+     * @return java.lang.String
+     * @date 2019/12/28
+     */
+    @Select("select * from admin where id = #{id}")
+    @Results({
+            @Result(column = "img_id", property = "imgId"),
+    })
+    Admin getAdminById(Long id);
+
+    /**
      * 功能描述:查询所有
      *
      * @param index 开始

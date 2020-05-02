@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head id="par">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <title>社区分享</title>
+    <link rel="stylesheet" type="text/css" href="statics/css/style.css"/>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/community.css">
+    <script src="js/pubUser.js" type="text/javascript"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link href="css/tools.css" rel="stylesheet"/>
+    <link href="css/emojibg.css" rel="stylesheet"/>
+    <script type="text/javascript" src="js/emojisort.js"></script>
+    <script type="text/javascript" src="js/emoji.js"></script>
+</head>
+<body>
+<div class="layui-row">
+    <div class="layui-col-md1">
+        <img src="img/pt.png" style="width: 50px;height: 50px">
+    </div>
+    <div class="layui-col-md10" style="min-height: 1100px">
+        <hr class="layui-bg-gray">
+        <div style="position:relative;float: left;">
+            <img src="emoji/icon.png" id="openFace" title="添加表情">
+            <textarea id="community-share-content" style="padding:5px;width: 1000px;height:100px;" placeholder="说点什么吧"></textarea>
+        </div>
+        <div style="float: right">
+            <button type="button" id="community-share-img" style="height: 100px;width: 120px">
+                <i class="layui-icon" style="height: 100px">&#xe67c;</i>上传
+            </button>
+        </div>
+    </div>
+    <div class="layui-col-md1">
+    </div>
+</div>
+<div class="faceDivBox" style="width:800px;height:580px;display:none;">
+    <div class="faceDiv" style="height:580px;">
+        <section class="emoji-box"></section>
+        <div class="tabbox">
+            <section class="emoji-tab"></section>
+        </div>
+    </div>
+    <a class="closeFaceBox" href="javascript:void(0)">×</a>
+</div>
+<script>
+    $(document).ready(function () {
+        sdEditorEmoj.Init(emojiconfig);
+        sdEditorEmoj.setEmoji({type: 'input', id: "community-share-content"});
+    })
+</script>
+</body>
+</html>

@@ -97,7 +97,11 @@ $(document).ready(function () {
                 toAppointmentClick();
             }
         );
-
+        //社区点击
+        $('#index-to-community').click(function () {
+                toCommunityClick();
+            }
+        );
         //续费1个月点击
         $('#renew1').click(function () {
                 renewMember(1);
@@ -154,18 +158,21 @@ $(document).ready(function () {
         let indexAppointmentRecord;
         $('#index-appointment-record').click(function () {
             $("#appointment-record").addClass("index-record");
-            indexAppointmentRecord = openRecord(layer);
             //加载预约数据
+            loadAppointmentRecord(element, table)
+            indexAppointmentRecord = openRecord(layer);
         });
         //弹出框内充值记录点击事件
         $('#recharge-record').click(function () {
-            //加载数据
             loadRechargeRecord(element, table);
         });
-        //弹出框内充值记录点击事件
+        //弹出框内消费记录点击事件
         $('#consumption-record').click(function () {
-            //加载数据
             loadConsumptionRecord(element, table);
+        });
+        //弹出框内预约记录点击事件
+        $('#appointment-record').click(function () {
+            loadAppointmentRecord(element, table);
         });
         //记录弹出框点击变色
         $(".layui-breadcrumb > a").click(function () {
@@ -188,11 +195,17 @@ $(document).ready(function () {
         $("#appointment-sure").click(function () {
             appointmentSure();
         });
+       /* //动态分享点击
+        $("#community-share").click(function () {
+            communityShare();
+        });*/
     });
 });
 
 //初始化页面
 function init() {
+    sdEditorEmoj.Init(emojiconfig);
+    sdEditorEmoj.setEmoji({type: 'input', id: "textarea"});
     if ($.cookie('flagUser') === undefined) {
         $.cookie('flagUser', 'index');
         window.location.href = 'index.html';
@@ -216,6 +229,8 @@ function init() {
             initEquip();
             $.cookie('date-day-next', "1");
             initTime(1);
+        } else if ($.cookie('flagUser') === 'community') {
+            $('#index-to-community').addClass('layui-this');
         } else {
             $('#index-to-member').addClass('layui-this');
         }
@@ -312,6 +327,14 @@ function toAppointmentClick() {
     checkLogin();
     $.cookie('flagUser', 'appointment');
     window.location.href = 'appointment.html';
+}
+
+//社区分享点击事件
+function toCommunityClick() {
+    //判断用户是否登陆
+    checkLogin();
+    $.cookie('flagUser', 'community');
+    window.location.href = 'community.html';
 }
 
 //首页点击事件
@@ -509,7 +532,7 @@ function loadRechargeRecord(element, table) {
     ;
 }
 
-//加载充值记录数据
+//加载消费记录数据
 function loadConsumptionRecord(element, table) {
     //刷新数据
     table.render({
@@ -522,7 +545,7 @@ function loadConsumptionRecord(element, table) {
         },
         page: true,
         title:
-            "充值记录",
+            "消费记录",
         limit:
             10,
         limits:
@@ -550,8 +573,54 @@ function loadConsumptionRecord(element, table) {
             , {field: 'createTime', title: '创建时间', align: 'center', width: '25%', sort: true}
             , {field: 'type', title: '交易类型', align: 'center', width: '20%'}
         ]]
-    })
-    ;
+    });
+}
+
+//加载预约记录数据
+function loadAppointmentRecord(element, table) {
+    //刷新数据
+    table.render({
+        elem: '#index-record-table',
+        height: 300,
+        url: $.cookie('url') + '/selectAllAppointment',
+        where: {
+            phone: localStorage.getItem('userPhone'),
+            token: $.cookie('userToken')
+        },
+        page: true,
+        title:
+            "预约记录",
+        limit:
+            10,
+        limits:
+            [10, 20],
+        id:
+            'id-coach',
+        response:
+            {
+                statusCode: 200
+            }
+        ,
+        parseData: function (res) { //res 即为原始返回的数据
+            return {
+                "code": res.code, //解析接口状态
+                "msg": res.message, //解析提示文本
+                "count": res.data.length, //解析数据长度
+                "data": res.data.data //解析数据列表
+            };
+        }
+        ,
+        cols: [[ //表头
+            {field: 'id', title: 'id', width: '10%', align: 'center'}
+            , {field: 'coachName', title: '教练', width: '10%', align: 'center', sort: true}
+            , {field: 'fieldName', title: '场地', align: 'center', width: '15%', sort: true}
+            , {field: 'equipName', title: '器材', align: 'center', width: '19%', sort: true}
+            , {field: 'startDate', title: '开始时间', align: 'center', width: '15%'}
+            , {field: 'endDate', title: '结束时间', align: 'center', width: '15%'}
+            , {field: 'money', title: '消费', align: 'center', width: '8%'}
+            , {field: 'disCount', title: '折扣', align: 'center', width: '8%'}
+        ]]
+    });
 }
 
 //记录弹出框点击变色
@@ -974,7 +1043,7 @@ function appointmentSure() {
                 $.removeCookie('date-day-next');
                 $.removeCookie('choice-day-time');
                 $.removeCookie('choice-day-time-show');
-                $.cookie('date-day-next',1);
+                $.cookie('date-day-next', 1);
             } else {
                 layer.msg(data.message, {icon: 5});
             }
@@ -1062,4 +1131,9 @@ function selectCoachAppointment() {
             }
         });
     }
+}
+
+//动态分享
+function communityShare() {
+
 }

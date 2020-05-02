@@ -1,20 +1,18 @@
 package com.cyg.appointment.service;
 
 import com.cyg.appointment.dto.AppointmentAddDto;
-import com.cyg.appointment.entity.Appointment;
-import com.cyg.appointment.entity.Member;
-import com.cyg.appointment.entity.User;
+import com.cyg.appointment.dto.AppointmentSelectDto;
+import com.cyg.appointment.entity.*;
 import com.cyg.appointment.exception.BaseResult;
 import com.cyg.appointment.exception.ResultEnum;
 import com.cyg.appointment.exception.ResultUtil;
-import com.cyg.appointment.mapper.AppointmentMapper;
-import com.cyg.appointment.mapper.MemberMapper;
-import com.cyg.appointment.mapper.UserMapper;
+import com.cyg.appointment.mapper.*;
 import com.cyg.appointment.util.Constants;
 import com.cyg.appointment.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,11 +31,19 @@ public class AppointmentService {
     private final UserMapper userMapper;
     private final MemberMapper memberMapper;
     private final AppointmentMapper appointmentMapper;
+    private final AdminMapper adminMapper;
+    private final FieldMapper fieldMapper;
+    private final AppointmentEquipMapper appointmentEquipMapper;
+    private final EquipMapper equipMapper;
 
-    public AppointmentService(UserMapper userMapper, MemberMapper memberMapper, AppointmentMapper appointmentMapper) {
+    public AppointmentService(UserMapper userMapper, MemberMapper memberMapper, AppointmentMapper appointmentMapper, AdminMapper adminMapper, FieldMapper fieldMapper, AppointmentEquipMapper appointmentEquipMapper, EquipMapper equipMapper) {
         this.userMapper = userMapper;
         this.memberMapper = memberMapper;
         this.appointmentMapper = appointmentMapper;
+        this.adminMapper = adminMapper;
+        this.fieldMapper = fieldMapper;
+        this.appointmentEquipMapper = appointmentEquipMapper;
+        this.equipMapper = equipMapper;
     }
 
 
@@ -113,6 +119,14 @@ public class AppointmentService {
             for (Appointment appointment : appointments) {
                 System.out.println(appointment);
                 appointmentMapper.addAppointment(appointment);
+                String[] equipIds = appointmentAddDto.getEquipId().split(",");
+                for (String equipId : equipIds) {
+                    AppointmentEquip appointmentEquip = new AppointmentEquip();
+                    appointmentEquip.setAppointmentId(appointment.getId());
+                    appointmentEquip.setCreateDate(DateUtil.getToDayTime());
+                    appointmentEquip.setEquipTypeId(Long.valueOf(equipId));
+                    appointmentEquipMapper.addAppointmentEquip(appointmentEquip);
+                }
             }
             Map<String, Object> map = new HashMap<>(4);
             map.put("moneyCountAll", moneyCountAll);
@@ -146,5 +160,40 @@ public class AppointmentService {
     public BaseResult selectCoachAppointment(String token, Long coachId) {
         List<Appointment> appointments = appointmentMapper.selectCoachAppointment(coachId);
         return ResultUtil.success(ResultEnum.OK, appointments);
+    }
+
+    public BaseResult selectAllAppointment(String token, String phone, Long page, Integer limit) {
+        Long index = (page - 1) * limit;
+        List<Appointment> appointments = appointmentMapper.selectAllAppointment(phone, index, limit);
+        List<AppointmentSelectDto> appointmentSelectDtos = new ArrayList<>();
+        for (Appointment appointment : appointments) {
+            AppointmentSelectDto appointmentSelectDto = new AppointmentSelectDto();
+            BeanUtils.copyProperties(appointment, appointmentSelectDto);
+            Admin admin = adminMapper.getAdminById(appointment.getCoachId());
+            if (admin != null) {
+                appointmentSelectDto.setCoachName(admin.getName());
+            }
+            Field field = fieldMapper.selectById(appointment.getFieldId());
+            if (field != null) {
+                appointmentSelectDto.setFieldName(field.getAddress());
+            }
+            StringBuilder equipName = new StringBuilder();
+            List<AppointmentEquip> appointmentEquips = appointmentEquipMapper.selectAppointmentEquip(appointment.getId());
+            for (int i = 0; i < appointmentEquips.size(); i++) {
+                AppointmentEquip appointmentEquip = appointmentEquips.get(i);
+                EquipType equipType = equipMapper.selectEquipTypeById(appointmentEquip.getEquipTypeId());
+                if (i == appointmentEquips.size() - 1) {
+                    equipName.append(equipType.getName());
+                } else {
+                    equipName.append("、").append(equipType.getName());
+                }
+            }
+            appointmentSelectDto.setEquipName(equipName.toString());
+            appointmentSelectDtos.add(appointmentSelectDto);
+        }
+        Map<String, Object> map = new HashMap<>(4);
+        map.put("length", appointmentMapper.selectLength());
+        map.put("data", appointmentSelectDtos);
+        return ResultUtil.success(map);
     }
 }

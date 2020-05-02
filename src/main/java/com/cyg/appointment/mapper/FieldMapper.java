@@ -52,6 +52,13 @@ public interface FieldMapper {
     })
     List<FieldSelectVo> selectAllFiled(Long index, Integer limit);
 
+
+    @Select("select * from field where id = #{id}")
+    @Results({
+            @Result(column = "room_number", property = "roomNumber"),
+            @Result(column = "base64", property = "code"),
+    })
+    Field selectById(Long id);
     /**
      * 功能描述:查询数据量
      *
